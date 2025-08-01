@@ -339,18 +339,8 @@ class DreamBirthdayApp {
         container.innerHTML = '';
         this.blobs = [];
         
-        for (let i = 0; i < this.blobCount; i++) {
-            setTimeout(() => {
-                this.createSingleBlob();
-            }, i * 1000);
-        }
-        
-        // Continue creating blobs every 3 seconds
-        setInterval(() => {
-            if (this.blobs.length < this.blobCount) {
-                this.createSingleBlob();
-            }
-        }, 3000);
+        // Don't start automatic blob creation - only create blobs when rope is pulled
+        console.log('🎯 Blob system initialized - waiting for rope pull');
     }
     
     createSingleBlob() {
@@ -393,10 +383,10 @@ class DreamBirthdayApp {
         this.triggerScreenShake();
         this.showCelebrationMessage();
         
-        // Create extra blobs for celebration
+        // Create extra blobs for celebration - only when celebrating
         for (let i = 0; i < 5; i++) {
             setTimeout(() => {
-                this.createSingleBlob();
+                this.createRopeBlob();
             }, i * 200);
         }
     }
@@ -1300,7 +1290,7 @@ document.addEventListener('keydown', (e) => {
     
     // Press 'D' for Dream
     if (e.key.toLowerCase() === 'd' && !e.target.matches('input, textarea')) {
-        dreamApp.createSingleBlob();
+        dreamApp.createRopeBlob();
     }
     
     // Press 'C' for confetti
