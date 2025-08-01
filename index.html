@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎉 Happy Birthday Dream! 🎂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Fredoka+One:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="assets/dreampfp.png" type="image/png" />
+</head>
+<body>
+  <!-- Animated background elements -->
+  <div class="background-elements">
+    <div class="floating-icons">
+      <i class="fas fa-birthday-cake"></i>
+      <i class="fas fa-gift"></i>
+      <i class="fas fa-star"></i>
+      <i class="fas fa-heart"></i>
+      <i class="fas fa-music"></i>
+      <span class="dream-icon">🟢</span>
+      <span class="dream-icon">⚡</span>
+      <span class="dream-icon">🎮</span>
+    </div>
+  </div>
+
+  <!-- Particles container -->
+  <div id="particles-container"></div>
+  
+  <!-- Falling blobs container -->
+  <div id="blobs-container"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <svg width="50" height="50" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="var(--dream-green)" />
+            <circle cx="35" cy="40" r="6" fill="white" />
+            <circle cx="65" cy="40" r="6" fill="white" />
+            <path d="M30 60 Q50 75 70 60" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" />
+          </svg>
+        </div>
+        <span class="brand-text">Dream's Birthday</span>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="#hero" class="nav-link">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#achievements" class="nav-link">Achievements</a></li>
+        <li><a href="#media" class="nav-link">Media</a></li>
+        <li><a href="#socials" class="nav-link">Socials</a></li>
+        <li><a href="#wishes" class="nav-link">Wishes</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero">
+    <div class="hero-background">
+      <div class="hero-gradient"></div>
+      <div class="hero-pattern"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-avatar">
+        <img src="assets/dreampfp.png" alt="Dream Avatar" class="avatar-img" />
+        <div class="avatar-glow"></div>
+      </div>
+      <h1 class="hero-title">
+        <span class="title-line">Happy Birthday</span>
+        <span class="title-name">Dream!</span>
+      </h1>
+      <p class="hero-subtitle">Celebrating the legend who changed Minecraft forever</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">32.9M</span>
+          <span class="stat-label">Subscribers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">26</span>
+          <span class="stat-label">Years Old</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">3.56B</span>
+          <span class="stat-label">Views</span>
+        </div>
+      </div>
+      <div class="hero-buttons">
+        <button class="btn btn-primary" id="celebrateBtn">
+          <i class="fas fa-party-horn"></i>
+          Start Celebration!
+        </button>
+        <button class="btn btn-secondary" onclick="document.getElementById('birthdayAudio').play()">
+          <i class="fas fa-music"></i>
+          Play Birthday Song
+        </button>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">About Dream</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <div class="text-block">
+            <h3>The Masked Legend</h3>
+            <p>Clay "Dream" is an American YouTuber and Twitch streamer who revolutionized Minecraft content creation. Known for his incredible speedrunning skills and the iconic Minecraft Manhunt series, Dream became one of the fastest-growing creators in YouTube history.</p>
+          </div>
+          <div class="text-block">
+            <h3>Beyond Gaming</h3>
+            <p>Dream is also a talented musician, with his debut single "Roadtrip" followed by the viral hit "Mask." His face reveal on October 2, 2022, was watched by millions of fans worldwide, marking a historic moment in internet culture.</p>
+          </div>
+          <div class="dream-facts">
+            <div class="fact">
+              <i class="fas fa-calendar"></i>
+              <span>Born: August 12, 1999 (Age 26)</span>
+            </div>
+            <div class="fact">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>From: Orlando, Florida</span>
+            </div>
+            <div class="fact">
+              <i class="fas fa-gamepad"></i>
+              <span>Known for: Minecraft Manhunt</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-visual">
+          <div class="feature-card minecraft-card">
+            <i class="fas fa-cube"></i>
+            <h4>Minecraft Master</h4>
+            <p>Speedrunning legend with incredible game knowledge</p>
+          </div>
+          <div class="feature-card music-card">
+            <i class="fas fa-microphone"></i>
+            <h4>Musical Artist</h4>
+            <p>Chart-topping songs loved by millions</p>
+          </div>
+          <div class="feature-card community-card">
+            <i class="fas fa-users"></i>
+            <h4>Community Builder</h4>
+            <p>Created the Dream SMP phenomenon</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Achievements Timeline -->
+  <section id="achievements">
+    <div class="container">
+      <h2 class="section-title">Epic Achievements</h2>
+      <div class="timeline">
+        <div class="timeline-item" data-year="2019">
+          <div class="timeline-content">
+            <h3>Channel Launch</h3>
+            <p>Started the Dream YouTube channel and uploaded first Minecraft videos</p>
+            <span class="timeline-date">2019</span>
+          </div>
+        </div>
+        <div class="timeline-item" data-year="2020">
+          <div class="timeline-content">
+            <h3>Manhunt Phenomenon</h3>
+            <p>Created the iconic Minecraft Manhunt series that took the internet by storm</p>
+            <span class="timeline-date">2020</span>
+          </div>
+        </div>
+        <div class="timeline-item" data-year="2020">
+          <div class="timeline-content">
+            <h3>Dream SMP Launch</h3>
+            <p>Founded the Dream SMP server, creating a new era of Minecraft storytelling</p>
+            <span class="timeline-date">2020</span>
+          </div>
+        </div>
+        <div class="timeline-item" data-year="2021">
+          <div class="timeline-content">
+            <h3>Music Career</h3>
+            <p>Released "Roadtrip" and "Mask" which became viral hits and topped music charts</p>
+            <span class="timeline-date">2021</span>
+          </div>
+        </div>
+        <div class="timeline-item" data-year="2022">
+          <div class="timeline-content">
+            <h3>Face Reveal</h3>
+            <p>Historic face reveal watched by over 1 million live viewers</p>
+            <span class="timeline-date">Oct 2022</span>
+          </div>
+        </div>
+        <div class="timeline-item" data-year="2023">
+          <div class="timeline-content">
+            <h3>Continued Success</h3>
+            <p>Maintains position as one of the most influential content creators</p>
+            <span class="timeline-date">2023+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Media Section -->
+  <section id="media">
+    <div class="container">
+      <h2 class="section-title">Dream's Media</h2>
+      <div class="media-grid">
+        <div class="media-card video-card">
+          <h3>Most Famous Manhunt</h3>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/tylNqtyj0gs" title="Dream Manhunt" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="media-card audio-card">
+          <h3>Roadtrip - Official Music Video</h3>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/Ow_PNMtMGhU" title="Dream - Roadtrip" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="media-card birthday-audio">
+          <h3>🎵 Birthday Celebration Song</h3>
+          <div class="audio-player">
+            <audio id="birthdayAudio" controls>
+              <source src="assets/birthday_song.mp3" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+          <p>A special jazz rendition to celebrate Dream's special day!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Links -->
+  <section id="socials">
+    <div class="container">
+      <h2 class="section-title">Connect with Dream</h2>
+      <div class="socials-grid">
+        <a href="https://www.youtube.com/c/dream" target="_blank" class="social-card youtube">
+          <i class="fab fa-youtube"></i>
+          <h3>YouTube</h3>
+          <p>Main Channel<br>32.9M Subscribers</p>
+          <span class="follow-count">Subscribe</span>
+        </a>
+        <a href="https://www.youtube.com/@DreamXD" target="_blank" class="social-card youtube-alt">
+          <i class="fab fa-youtube"></i>
+          <h3>DreamXD</h3>
+          <p>Second Channel<br>4.16M Subscribers</p>
+          <span class="follow-count">Subscribe</span>
+        </a>
+        <a href="https://twitter.com/Dream" target="_blank" class="social-card twitter">
+          <i class="fab fa-twitter"></i>
+          <h3>Twitter</h3>
+          <p>@Dream<br>Latest Updates</p>
+          <span class="follow-count">Follow</span>
+        </a>
+        <a href="https://www.twitch.tv/dream" target="_blank" class="social-card twitch">
+          <i class="fab fa-twitch"></i>
+          <h3>Twitch</h3>
+          <p>Live Streams<br>Gaming Content</p>
+          <span class="follow-count">Follow</span>
+        </a>
+        <a href="https://www.instagram.com/dreamwastaken/" target="_blank" class="social-card instagram">
+          <i class="fab fa-instagram"></i>
+          <h3>Instagram</h3>
+          <p>@dreamwastaken<br>Behind the Scenes</p>
+          <span class="follow-count">Follow</span>
+        </a>
+        <a href="https://open.spotify.com/artist/5rJVTTK0mg38P0t8NLHnr2" target="_blank" class="social-card spotify">
+          <i class="fab fa-spotify"></i>
+          <h3>Spotify</h3>
+          <p>Music<br>Mask, Roadtrip & More</p>
+          <span class="follow-count">Listen</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Birthday Wishes -->
+  <section id="wishes">
+    <div class="container">
+      <h2 class="section-title">Birthday Wishes Wall</h2>
+      <div class="wishes-container">
+        <div class="wish-form-container">
+          <div class="wish-form">
+            <h3>Send Your Birthday Wish</h3>
+            <textarea id="wishInput" placeholder="Write your birthday message for Dream..."></textarea>
+            <div class="form-actions">
+              <button id="addWishBtn" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i>
+                Send Wish
+              </button>
+              <button id="clearWishesBtn" class="btn btn-secondary">
+                <i class="fas fa-trash"></i>
+                Clear All
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="wishes-display">
+          <div id="wishList" class="wish-list"></div>
+          <div class="default-wishes">
+            <div class="wish-item">
+              <div class="wish-content">
+                <p>"Happy Birthday Dream! Thanks for all the amazing content! 🎉"</p>
+                <span class="wish-author">- Fan from Twitter</span>
+              </div>
+            </div>
+            <div class="wish-item">
+              <div class="wish-content">
+                <p>"Hope you have the most amazing day! Your manhunts are legendary! 🏃‍♂️"</p>
+                <span class="wish-author">- Minecraft Community</span>
+              </div>
+            </div>
+            <div class="wish-item">
+              <div class="wish-content">
+                <p>"Thank you for inspiring so many people! Happy Birthday! 🎂"</p>
+                <span class="wish-author">- Fellow Content Creator</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>Dream Birthday Celebration 2025</h3>
+          <p>Made with ❤️ by the Dream community</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://www.youtube.com/@dream" target="_blank">YouTube</a>
+          <a href="https://twitter.com/Dream" target="_blank">Twitter</a>
+          <a href="https://www.twitch.tv/dream" target="_blank">Twitch</a>
+          <a href="https://www.instagram.com/dreamwastaken/" target="_blank">Instagram</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Dream Birthday Website. This is a fan-made tribute site.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Confetti container -->
+  <div id="confetti-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/script.js"></script>
+</body>
+</html>
