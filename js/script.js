@@ -10,6 +10,26 @@ class DreamBirthdayApp {
         this.blobs = [];
         this.confettiPieces = [];
         this.wishes = this.loadWishes();
+        this.sampleWishes = [
+            { text: "Happy Birthday Dream! Thanks for all the amazing content and endless entertainment! 🎉🎂", author: "Minecraft Fan", example: true },
+            { text: "Your manhunts are absolutely legendary! Hope you have the best birthday ever! 🏃‍♂️✨", author: "Gaming Community", example: true },
+            { text: "Thank you for inspiring millions of people around the world! Have a fantastic day! 🌟", author: "Content Creator Fan", example: true },
+            { text: "The Dream SMP was such an incredible journey to watch! Happy Birthday! 🎭🎪", author: "SMP Viewer", example: true },
+            { text: "Your music hits different! Mask and Roadtrip are on repeat! Have a great birthday! 🎵🎶", author: "Music Lover", example: true },
+            { text: "Face reveal was iconic! Thanks for sharing that moment with us! Happy Birthday! 😊🎉", author: "Long-time Fan", example: true },
+            { text: "You've changed Minecraft forever! Hope your special day is as amazing as you are! ⚡🟢", author: "Speedrun Enthusiast", example: true },
+            { text: "Dream Team forever! Wishing you happiness and success! Happy Birthday! 👑🎈", author: "Team Fan", example: true }
+        ];
+        this.currentWishIndex = 0;
+        this.sampleArtworks = [
+            { title: "Dream's Birthday Celebration", description: "A vibrant artwork celebrating Dream's special day with Minecraft elements", artist: "Artist Sample 1", twitter: "elevenisrising", example: true },
+            { title: "Manhunt Masterpiece", description: "Epic fan art depicting Dream's legendary manhunt adventures", artist: "Artist Sample 2", twitter: "elevenisrising", example: true },
+            { title: "Dream SMP Universe", description: "Beautiful illustration of the Dream SMP world and characters", artist: "Artist Sample 3", twitter: "elevenisrising", example: true },
+            { title: "Speedrun Champion", description: "Dynamic artwork showing Dream's incredible speedrunning skills", artist: "Artist Sample 4", twitter: "elevenisrising", example: true },
+            { title: "Face Reveal Tribute", description: "Heartwarming art commemorating Dream's historic face reveal", artist: "Artist Sample 5", twitter: "elevenisrising", example: true },
+            { title: "Music & Gaming", description: "Creative piece combining Dream's music and gaming talents", artist: "Artist Sample 6", twitter: "elevenisrising", example: true }
+        ];
+        this.currentArtworkIndex = 0;
         
         // Animation settings
         this.particleCount = 50;
@@ -37,7 +57,8 @@ class DreamBirthdayApp {
             this.createBlobs();
             this.startAnimationLoop();
             this.setupScrollAnimations();
-            this.displayWishes();
+            this.initGalleryDisplay();
+            this.initWishesDisplay();
             this.setupNavigation();
             this.isInitialized = true;
             
@@ -54,27 +75,41 @@ class DreamBirthdayApp {
             });
         }
         
-        // Wish form
+        // Random wish display
+        const nextWishBtn = document.getElementById('nextWishBtn');
         const addWishBtn = document.getElementById('addWishBtn');
-        const clearWishesBtn = document.getElementById('clearWishesBtn');
+        const submitWishBtn = document.getElementById('submitWishBtn');
+        const cancelWishBtn = document.getElementById('cancelWishBtn');
         const wishInput = document.getElementById('wishInput');
         
-        if (addWishBtn) {
-            addWishBtn.addEventListener('click', () => {
-                this.addWish();
+        if (nextWishBtn) {
+            nextWishBtn.addEventListener('click', () => {
+                this.showNextWish();
             });
         }
         
-        if (clearWishesBtn) {
-            clearWishesBtn.addEventListener('click', () => {
-                this.clearWishes();
+        if (addWishBtn) {
+            addWishBtn.addEventListener('click', () => {
+                this.showWishForm();
+            });
+        }
+        
+        if (submitWishBtn) {
+            submitWishBtn.addEventListener('click', () => {
+                this.submitWish();
+            });
+        }
+        
+        if (cancelWishBtn) {
+            cancelWishBtn.addEventListener('click', () => {
+                this.hideWishForm();
             });
         }
         
         if (wishInput) {
             wishInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter' && e.ctrlKey) {
-                    this.addWish();
+                    this.submitWish();
                 }
             });
         }
@@ -112,6 +147,104 @@ class DreamBirthdayApp {
         if (heroAvatar) {
             heroAvatar.addEventListener('click', () => {
                 this.avatarClickEffect();
+            });
+        }
+        
+        // Pull rope interaction - drag to activate
+        const pullRope = document.querySelector('.pull-rope-container');
+        if (pullRope) {
+            let isDragging = false;
+            let startY = 0;
+            let currentY = 0;
+            let pullDistance = 0;
+            
+            pullRope.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startY = e.clientY;
+                pullRope.classList.add('pulling');
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                currentY = e.clientY;
+                pullDistance = Math.max(0, currentY - startY);
+                
+                // Visual feedback while dragging
+                if (pullDistance > 15) {
+                    pullRope.style.transform = `translateY(${Math.min(pullDistance * 0.4, 20)}px)`;
+                }
+                
+                // Trigger when pulled down 40px or more
+                if (pullDistance > 40) {
+                    this.pullRope();
+                    isDragging = false;
+                    pullRope.classList.remove('pulling');
+                    pullRope.style.transform = '';
+                }
+            });
+            
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    pullRope.classList.remove('pulling');
+                    pullRope.style.transform = '';
+                }
+            });
+            
+            // Touch events for mobile
+            pullRope.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startY = e.touches[0].clientY;
+                pullRope.classList.add('pulling');
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                
+                currentY = e.touches[0].clientY;
+                pullDistance = Math.max(0, currentY - startY);
+                
+                if (pullDistance > 15) {
+                    pullRope.style.transform = `translateY(${Math.min(pullDistance * 0.4, 20)}px)`;
+                }
+                
+                if (pullDistance > 40) {
+                    this.pullRope();
+                    isDragging = false;
+                    pullRope.classList.remove('pulling');
+                    pullRope.style.transform = '';
+                }
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchend', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    pullRope.classList.remove('pulling');
+                    pullRope.style.transform = '';
+                }
+            });
+        }
+        
+        // Setup journey without starting autoplay yet
+        this.setupJourneyInteractions();
+        
+        // Gallery interactions
+        const nextArtworkBtn = document.getElementById('nextArtworkBtn');
+        const artworkDisplay = document.getElementById('currentArtwork');
+        
+        if (nextArtworkBtn) {
+            nextArtworkBtn.addEventListener('click', () => {
+                this.showNextArtwork();
+            });
+        }
+        
+        if (artworkDisplay) {
+            artworkDisplay.addEventListener('click', () => {
+                this.visitCurrentArtist();
             });
         }
     }
@@ -224,16 +357,23 @@ class DreamBirthdayApp {
         const container = document.getElementById('blobs-container');
         if (!container) return;
         
-        const blob = document.createElement('div');
-        blob.className = 'blob';
+        const blob = document.createElement('img');
+        blob.src = 'assets/Dreamblob.png';
+        blob.className = 'blob dream-blob-image';
+        blob.alt = 'Dream Blob';
         
         const x = Math.random() * (window.innerWidth - 40);
-        const colors = [this.colors.primary, this.colors.secondary, this.colors.accent];
-        const color = colors[Math.floor(Math.random() * colors.length)];
+        const size = 35 + Math.random() * 15; // 35-50px
         
+        blob.style.position = 'absolute';
         blob.style.left = `${x}px`;
-        blob.style.backgroundColor = color;
-        blob.style.boxShadow = `0 0 20px ${color}40`;
+        blob.style.top = '-60px';
+        blob.style.width = `${size}px`;
+        blob.style.height = `${size}px`;
+        blob.style.animation = 'blobFall 10s linear forwards';
+        blob.style.transform = `rotate(${Math.random() * 360}deg)`;
+        blob.style.opacity = '0.8';
+        blob.style.zIndex = '500';
         
         container.appendChild(blob);
         this.blobs.push(blob);
@@ -457,6 +597,389 @@ class DreamBirthdayApp {
         this.createMiniConfetti(avatar);
     }
     
+    pullRope() {
+        // Show blob alert message
+        this.showBlobAlert();
+        
+        // Create LOTS of blobs falling from the rope - birthday explosion!
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                this.createRopeBlob();
+            }, i * 50); // Faster intervals for more intensity
+        }
+        
+        // Add more blobs in waves
+        setTimeout(() => {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    this.createRopeBlob();
+                }, i * 80);
+            }
+        }, 1000);
+        
+        // Final wave of blobs
+        setTimeout(() => {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    this.createRopeBlob();
+                }, i * 120);
+            }
+        }, 2000);
+        
+        // Create confetti explosion too!
+        this.createConfetti();
+        
+        // Add rope pull animation - no need for translation since it's positioned with 'right'
+        const rope = document.querySelector('.pull-rope-container');
+        if (rope) {
+            rope.style.animation = 'none';
+            setTimeout(() => {
+                rope.style.animation = 'birthdayGlow 3s ease-in-out infinite';
+            }, 10);
+        }
+    }
+    
+    showBlobAlert() {
+        // Create the alert element
+        const alert = document.createElement('div');
+        alert.className = 'blob-alert';
+        alert.textContent = '🎯 Blob Attack! 🎯';
+        
+        // Add to body
+        document.body.appendChild(alert);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+            if (alert && alert.parentNode) {
+                alert.parentNode.removeChild(alert);
+            }
+        }, 3000);
+    }
+    
+    createRopeBlob() {
+        const container = document.getElementById('blobs-container');
+        if (!container) return;
+        
+        const blob = document.createElement('img');
+        blob.src = 'assets/Dreamblob.png';
+        blob.className = 'blob rope-blob dream-blob-image';
+        blob.alt = 'Dream Blob';
+        
+        // Random position across entire page width
+        const x = Math.random() * (window.innerWidth - 40);
+        
+        // Random size for variety
+        const size = 30 + Math.random() * 20; // 30-50px
+        
+        blob.style.position = 'absolute';
+        blob.style.left = `${x}px`;
+        blob.style.top = '-60px'; // Start from top of screen
+        blob.style.width = `${size}px`;
+        blob.style.height = `${size}px`;
+        blob.style.animation = 'blobFall 4s linear forwards';
+        blob.style.transform = `rotate(${Math.random() * 360}deg)`;
+        blob.style.opacity = '1';
+        blob.style.zIndex = '1000';
+        
+        container.appendChild(blob);
+        this.blobs.push(blob);
+        
+        // Remove blob after animation
+        setTimeout(() => {
+            if (container.contains(blob)) {
+                container.removeChild(blob);
+                this.blobs = this.blobs.filter(b => b !== blob);
+            }
+        }, 4000);
+    }
+    
+    setupJourneyInteractions() {
+        this.currentPhase = 1;
+        this.currentProgress = 0; // Start at 0% (Beginning of Phase 1)
+        this.autoPlayTimer = null;
+        this.smoothTimer = null;
+        this.resumeTimeout = null;
+        this.isUserInteracting = false;
+        this.journeyObserver = null;
+        
+        // Immediately set initial progress bar state to 0%
+        this.goToProgressPercentage(0, false);
+        
+        // Don't start autoplay immediately - wait for user to scroll to section
+        this.setupJourneyVisibilityObserver();
+        
+        // Checkpoint clicks
+        document.querySelectorAll('.checkpoint').forEach(checkpoint => {
+            checkpoint.addEventListener('click', () => {
+                this.pauseAutoPlay();
+                const phase = parseInt(checkpoint.dataset.phase);
+                const percentage = (phase - 1) * 25 + 12.5; // Center of each phase
+                this.currentProgress = percentage;
+                this.goToProgressPercentage(percentage);
+                this.resumeAutoPlayAfterDelay();
+            });
+        });
+        
+        // Progress bar interactions
+        const progressBar = document.querySelector('.progress-bar');
+        const progressHandle = document.querySelector('.progress-handle');
+        
+        if (progressBar && progressHandle) {
+            let isDragging = false;
+            
+            // Progress bar click
+            progressBar.addEventListener('click', (e) => {
+                if (e.target === progressHandle) return;
+                
+                this.pauseAutoPlay();
+                this.isUserInteracting = true;
+                
+                const rect = progressBar.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+                
+                // Update current progress to clicked position
+                this.currentProgress = percentage;
+                this.goToProgressPercentage(percentage);
+                // Resume immediately, not after delay
+                this.isUserInteracting = false;
+                this.startAutoPlay();
+            });
+            
+            // Handle dragging
+            progressHandle.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                this.isUserInteracting = true;
+                this.pauseAutoPlay();
+                progressHandle.style.cursor = 'grabbing';
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const rect = progressBar.getBoundingClientRect();
+                const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+                const percentage = (x / rect.width) * 100;
+                
+                // Update current progress while dragging
+                this.currentProgress = percentage;
+                this.goToProgressPercentage(percentage, false); // Don't animate on drag
+            });
+            
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    this.isUserInteracting = false;
+                    progressHandle.style.cursor = 'grab';
+                    // Resume immediately after drag
+                    this.startAutoPlay();
+                }
+            });
+            
+            // Touch events for mobile
+            progressHandle.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                this.isUserInteracting = true;
+                this.pauseAutoPlay();
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                
+                const touch = e.touches[0];
+                const rect = progressBar.getBoundingClientRect();
+                const x = Math.max(0, Math.min(rect.width, touch.clientX - rect.left));
+                const percentage = (x / rect.width) * 100;
+                
+                // Update current progress while dragging
+                this.currentProgress = percentage;
+                this.goToProgressPercentage(percentage, false);
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchend', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    this.isUserInteracting = false;
+                    // Resume immediately after touch drag
+                    this.startAutoPlay();
+                }
+            });
+        }
+    }
+    
+    // New method for handling progress percentage
+    goToProgressPercentage(percentage, animate = true) {
+        this.currentProgress = Math.max(0, Math.min(100, percentage));
+        
+        // Determine phase based on percentage ranges
+        let phase;
+        if (percentage < 25) {
+            phase = 1;
+        } else if (percentage < 50) {
+            phase = 2;
+        } else if (percentage < 75) {
+            phase = 3;
+        } else {
+            phase = 4;
+        }
+        
+        // Update character position based on exact percentage
+        this.updateCharacterPosition(percentage);
+        
+        // Update phase content only if phase changed
+        if (phase !== this.currentPhase) {
+            this.currentPhase = phase;
+            this.updatePhaseContent(phase);
+        }
+        
+        // Update progress bar
+        this.updateProgressBar(percentage, animate);
+    }
+    
+    
+    updateCharacterPosition(percentage) {
+        const character = document.querySelector('.walking-character');
+        if (character) {
+            // Convert percentage to left position (0% to 100%)
+            const leftPosition = Math.max(0, Math.min(100, percentage));
+            character.style.left = `${leftPosition}%`;
+            console.log(`🚶 Dream moved to ${leftPosition}%`);
+        }
+    }
+    
+    updatePhaseContent(phase) {
+        // Update checkpoints
+        document.querySelectorAll('.checkpoint').forEach(checkpoint => {
+            checkpoint.classList.remove('active');
+        });
+        const activeCheckpoint = document.querySelector(`[data-phase="${phase}"]`);
+        if (activeCheckpoint) {
+            activeCheckpoint.classList.add('active');
+        }
+        
+        // Update phase content
+        document.querySelectorAll('.phase-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        const activePhaseItem = document.querySelector(`.phase-item[data-phase="${phase}"]`);
+        if (activePhaseItem) {
+            activePhaseItem.classList.add('active');
+        }
+        
+        // Show notification only if not user interacting
+        if (!this.isUserInteracting) {
+            this.showNotification(`🎯 Entered ${this.getPhaseTitle(phase)}!`);
+        }
+    }
+    
+    updateProgressBar(percentage, animate = true) {
+        const progressFill = document.querySelector('.progress-fill');
+        const progressHandle = document.querySelector('.progress-handle');
+        
+        if (progressFill && progressHandle) {
+            if (animate) {
+                progressFill.style.width = `${percentage}%`;
+                progressHandle.style.left = `${percentage}%`;
+            } else {
+                progressFill.style.transition = 'none';
+                progressHandle.style.transition = 'none';
+                progressFill.style.width = `${percentage}%`;
+                progressHandle.style.left = `${percentage}%`;
+                
+                // Re-enable transitions after a frame
+                requestAnimationFrame(() => {
+                    progressFill.style.transition = '';
+                    progressHandle.style.transition = '';
+                });
+            }
+        }
+    }
+    
+    // Continuous video-like progress bar
+    startAutoPlay() {
+        // Clear any existing timer first
+        this.pauseAutoPlay();
+        
+        // Start continuous movement like video progress bar
+        this.autoPlayTimer = setInterval(() => {
+            if (!this.isUserInteracting) {
+                // Move forward by small increments continuously
+                this.currentProgress += 0.125; // 0.125% every 100ms = 25% in 20 seconds
+                
+                // Loop back to start when reaching 100%
+                if (this.currentProgress > 100) {
+                    this.currentProgress = 0;
+                }
+                
+                this.goToProgressPercentage(this.currentProgress, false);
+            }
+        }, 100); // Update every 100ms for smooth movement
+        
+        console.log('▶️ Video-like auto-play started');
+    }
+    
+    pauseAutoPlay() {
+        if (this.autoPlayTimer) {
+            clearInterval(this.autoPlayTimer);
+            this.autoPlayTimer = null;
+            console.log('⏸️ Video-like auto-play paused');
+        }
+    }
+    
+    resumeAutoPlayAfterDelay() {
+        // Clear any existing resume timeout
+        if (this.resumeTimeout) {
+            clearTimeout(this.resumeTimeout);
+        }
+        
+        this.resumeTimeout = setTimeout(() => {
+            if (!this.isUserInteracting && !this.autoPlayTimer) {
+                this.startAutoPlay();
+                console.log('🔄 Auto-play resumed');
+            }
+            this.resumeTimeout = null;
+        }, 5000); // Resume after 5 seconds of no interaction
+    }
+    
+    setupJourneyVisibilityObserver() {
+        const achievementsSection = document.getElementById('achievements');
+        if (!achievementsSection) return;
+        
+        this.journeyObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // User scrolled to achievements section - start autoplay
+                    console.log('🎯 Journey section visible - starting autoplay');
+                    if (!this.autoPlayTimer && !this.isUserInteracting) {
+                        this.startAutoPlay();
+                    }
+                } else {
+                    // User scrolled away - pause autoplay
+                    console.log('🎯 Journey section hidden - pausing autoplay');
+                    this.pauseAutoPlay();
+                }
+            });
+        }, {
+            threshold: 0.3, // Start when 30% of section is visible
+            rootMargin: '0px'
+        });
+        
+        this.journeyObserver.observe(achievementsSection);
+    }
+    
+    getPhaseTitle(phase) {
+        const titles = {
+            1: 'Early Days Era',
+            2: 'Rise to Fame Era',
+            3: 'Peak Success Era',
+            4: 'Legacy Era'
+        };
+        return titles[phase] || 'Unknown Phase';
+    }
+    
     setupScrollAnimations() {
         const observerOptions = {
             threshold: 0.1,
@@ -477,7 +1000,74 @@ class DreamBirthdayApp {
         });
     }
     
-    addWish() {
+    initWishesDisplay() {
+        this.showRandomWish();
+        this.updateWishStats();
+    }
+    
+    showRandomWish() {
+        const allWishes = [...this.sampleWishes, ...this.wishes];
+        if (allWishes.length === 0) return;
+        
+        // Use crypto.getRandomValues for true randomness if available
+        let randomIndex;
+        if (window.crypto && window.crypto.getRandomValues) {
+            const array = new Uint32Array(1);
+            window.crypto.getRandomValues(array);
+            randomIndex = array[0] % allWishes.length;
+        } else {
+            // Fallback to Math.random
+            randomIndex = Math.floor(Math.random() * allWishes.length);
+        }
+        
+        const wish = allWishes[randomIndex];
+        this.displayCurrentWish(wish);
+    }
+    
+    showNextWish() {
+        const currentWish = document.getElementById('currentWish');
+        if (currentWish) {
+            currentWish.classList.add('wish-changing');
+            
+            setTimeout(() => {
+                this.showRandomWish();
+                currentWish.classList.remove('wish-changing');
+            }, 250);
+        }
+    }
+    
+    displayCurrentWish(wish) {
+        const wishText = document.getElementById('wishText');
+        const wishAuthor = document.getElementById('wishAuthor');
+        const wishExample = document.querySelector('.wish-example');
+        
+        if (wishText) wishText.textContent = `"${wish.text}"`;
+        if (wishAuthor) wishAuthor.textContent = `- ${wish.author}`;
+        
+        // Show/hide example badge
+        if (wishExample) {
+            wishExample.style.display = wish.example ? 'inline-block' : 'none';
+        }
+    }
+    
+    showWishForm() {
+        const formContainer = document.querySelector('.wish-form-container');
+        if (formContainer) {
+            formContainer.style.display = 'block';
+            const textarea = document.getElementById('wishInput');
+            if (textarea) textarea.focus();
+        }
+    }
+    
+    hideWishForm() {
+        const formContainer = document.querySelector('.wish-form-container');
+        const textarea = document.getElementById('wishInput');
+        
+        if (formContainer) formContainer.style.display = 'none';
+        if (textarea) textarea.value = '';
+    }
+    
+    submitWish() {
         const input = document.getElementById('wishInput');
         if (!input) return;
         
@@ -491,49 +1081,100 @@ class DreamBirthdayApp {
             id: Date.now(),
             text: text,
             timestamp: new Date().toLocaleString(),
-            author: 'Anonymous Fan'
+            author: 'Anonymous Fan',
+            example: false
         };
         
         this.wishes.unshift(wish);
         this.saveWishes();
-        this.displayWishes();
-        input.value = '';
+        this.hideWishForm();
+        this.updateWishStats();
         
-        this.showNotification('Birthday wish sent! 🎉');
+        this.showNotification('Birthday wish added! 🎉 It may appear randomly!');
         
         // Create confetti at the button location
-        const button = document.getElementById('addWishBtn');
+        const button = document.getElementById('submitWishBtn');
         if (button) {
             this.createMiniConfetti(button);
         }
     }
     
-    clearWishes() {
-        if (confirm('Are you sure you want to clear all wishes?')) {
-            this.wishes = [];
-            this.saveWishes();
-            this.displayWishes();
-            this.showNotification('All wishes cleared! 🧹');
+    updateWishStats() {
+        const totalWishes = this.sampleWishes.length + this.wishes.length;
+        const wishCount = document.getElementById('wishCount');
+        if (wishCount) {
+            wishCount.textContent = totalWishes;
         }
     }
     
-    displayWishes() {
-        const wishList = document.getElementById('wishList');
-        if (!wishList) return;
+    // Gallery Methods
+    initGalleryDisplay() {
+        this.showRandomArtwork();
+        this.updateArtworkStats();
+    }
+    
+    showRandomArtwork() {
+        if (this.sampleArtworks.length === 0) return;
         
-        if (this.wishes.length === 0) {
-            wishList.innerHTML = '<p style="text-align: center; opacity: 0.7;">No wishes yet. Be the first to send one! 💌</p>';
-            return;
+        // Use crypto.getRandomValues for true randomness if available
+        let randomIndex;
+        if (window.crypto && window.crypto.getRandomValues) {
+            const array = new Uint32Array(1);
+            window.crypto.getRandomValues(array);
+            randomIndex = array[0] % this.sampleArtworks.length;
+        } else {
+            // Fallback to Math.random
+            randomIndex = Math.floor(Math.random() * this.sampleArtworks.length);
         }
         
-        wishList.innerHTML = this.wishes.map(wish => `
-            <div class=\"wish-item\" data-wish-id=\"${wish.id}\">
-                <div class=\"wish-content\">
-                    <p>\"${wish.text}\"</p>
-                    <span class=\"wish-author\">- ${wish.author} (${wish.timestamp})</span>
-                </div>
-            </div>
-        `).join('');
+        const artwork = this.sampleArtworks[randomIndex];
+        this.currentArtwork = artwork;
+        this.displayCurrentArtwork(artwork);
+    }
+    
+    showNextArtwork() {
+        const currentArtwork = document.getElementById('currentArtwork');
+        if (currentArtwork) {
+            currentArtwork.classList.add('artwork-changing');
+            
+            setTimeout(() => {
+                this.showRandomArtwork();
+                currentArtwork.classList.remove('artwork-changing');
+            }, 300);
+        }
+    }
+    
+    displayCurrentArtwork(artwork) {
+        const artworkTitle = document.getElementById('artworkTitle');
+        const artworkDescription = document.getElementById('artworkDescription');
+        const artistName = document.getElementById('artistName');
+        const visitButton = document.getElementById('visitArtistBtn');
+        
+        if (artworkTitle) artworkTitle.textContent = artwork.title;
+        if (artworkDescription) artworkDescription.textContent = artwork.description;
+        if (artistName) artistName.textContent = artwork.artist;
+        
+        // Update visit button
+        if (visitButton) {
+            visitButton.onclick = () => {
+                window.open(`https://twitter.com/${artwork.twitter}`, '_blank');
+            };
+        }
+    }
+    
+    visitCurrentArtist() {
+        if (this.currentArtwork && this.currentArtwork.twitter) {
+            window.open(`https://twitter.com/${this.currentArtwork.twitter}`, '_blank');
+            this.showNotification('🎨 Visiting artist\'s Twitter! Support our amazing creators!');
+        }
+    }
+    
+    updateArtworkStats() {
+        const totalArtworks = this.sampleArtworks.length;
+        const artworkCount = document.getElementById('artworkCount');
+        if (artworkCount) {
+            artworkCount.textContent = totalArtworks;
+        }
     }
     
     loadWishes() {

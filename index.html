@@ -30,6 +30,13 @@
   <!-- Falling blobs container -->
   <div id="blobs-container"></div>
 
+  <!-- Birthday Pull String -->
+  <div class="pull-rope-container" data-tooltip="Pull the rope for Dream blobs! 🎯">
+    <div class="rope-string">
+      <div class="rope-end"></div>
+    </div>
+  </div>
+
   <!-- Navigation -->
   <nav class="navbar">
     <div class="nav-container">
@@ -47,10 +54,11 @@
       <ul class="nav-menu">
         <li><a href="#hero" class="nav-link">Home</a></li>
         <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#achievements" class="nav-link">Achievements</a></li>
-        <li><a href="#media" class="nav-link">Media</a></li>
-        <li><a href="#socials" class="nav-link">Socials</a></li>
+        <li><a href="#achievements" class="nav-link">Journey</a></li>
+        <li><a href="#gallery" class="nav-link">Gallery</a></li>
         <li><a href="#wishes" class="nav-link">Wishes</a></li>
+        <li><a href="#media" class="nav-link">Media</a></li>
+        <li><a href="#socials" class="nav-link">Connect</a></li>
       </ul>
       <div class="hamburger">
         <span></span>
@@ -147,60 +155,214 @@
             <p>Chart-topping songs loved by millions</p>
           </div>
           <div class="feature-card community-card">
-            <i class="fas fa-users"></i>
-            <h4>Community Builder</h4>
-            <p>Created the Dream SMP phenomenon</p>
+            <i class="fas fa-running"></i>
+            <h4>Manhunt Master</h4>
+            <p>Revolutionized Minecraft with epic chase gameplay</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Achievements Timeline -->
+  <!-- Epic Achievements Journey -->
   <section id="achievements">
     <div class="container">
-      <h2 class="section-title">Epic Achievements</h2>
-      <div class="timeline">
-        <div class="timeline-item" data-year="2019">
-          <div class="timeline-content">
-            <h3>Channel Launch</h3>
-            <p>Started the Dream YouTube channel and uploaded first Minecraft videos</p>
-            <span class="timeline-date">2019</span>
+      <h2 class="section-title">Epic Achievements Journey</h2>
+      <div class="journey-container">
+        <!-- Walking Path Background -->
+        <div class="walking-path">
+          <div class="path-line"></div>
+          <div class="checkpoint" data-phase="1">
+            <div class="checkpoint-marker">1</div>
+            <div class="checkpoint-label">Early Days</div>
+          </div>
+          <div class="checkpoint" data-phase="2">
+            <div class="checkpoint-marker">2</div>
+            <div class="checkpoint-label">Rise to Fame</div>
+          </div>
+          <div class="checkpoint" data-phase="3">
+            <div class="checkpoint-marker">3</div>
+            <div class="checkpoint-label">Peak Success</div>
+          </div>
+          <div class="checkpoint" data-phase="4">
+            <div class="checkpoint-marker">4</div>
+            <div class="checkpoint-label">Legacy Era</div>
           </div>
         </div>
-        <div class="timeline-item" data-year="2020">
-          <div class="timeline-content">
-            <h3>Manhunt Phenomenon</h3>
-            <p>Created the iconic Minecraft Manhunt series that took the internet by storm</p>
-            <span class="timeline-date">2020</span>
+        
+        <!-- Walking Character -->
+        <div class="walking-character">
+          <div class="character-gif">
+            <img src="assets/dreampfp.png" alt="Dream Character" class="walking-dream">
           </div>
         </div>
-        <div class="timeline-item" data-year="2020">
-          <div class="timeline-content">
-            <h3>Dream SMP Launch</h3>
-            <p>Founded the Dream SMP server, creating a new era of Minecraft storytelling</p>
-            <span class="timeline-date">2020</span>
+        
+        <!-- Phase Content Display -->
+        <div class="phase-content">
+          <div class="phase-item active" data-phase="1">
+            <h3>Phase 1: Early Days</h3>
+            <p>Dream starts his YouTube journey with early Minecraft content and speedruns.</p>
+            <div class="phase-details">
+              <span class="phase-year">2019-2020</span>
+              <span class="phase-achievement">Channel Foundation</span>
+              <span class="phase-example">(Example Content)</span>
+            </div>
+          </div>
+          <div class="phase-item" data-phase="2">
+            <h3>Phase 2: Rise to Fame</h3>
+            <p>The iconic Manhunt series launches, revolutionizing Minecraft content.</p>
+            <div class="phase-details">
+              <span class="phase-year">2020-2021</span>
+              <span class="phase-achievement">Manhunt Mastery</span>
+              <span class="phase-example">(Example Content)</span>
+            </div>
+          </div>
+          <div class="phase-item" data-phase="3">
+            <h3>Phase 3: Peak Success</h3>
+            <p>Music career begins, Dream SMP flourishes, reaching global recognition.</p>
+            <div class="phase-details">
+              <span class="phase-year">2021-2022</span>
+              <span class="phase-achievement">Multi-Media Star</span>
+              <span class="phase-example">(Example Content)</span>
+            </div>
+          </div>
+          <div class="phase-item" data-phase="4">
+            <h3>Phase 4: Legacy Era</h3>
+            <p>Face reveal, continued innovation, and lasting impact on content creation.</p>
+            <div class="phase-details">
+              <span class="phase-year">2022-Present</span>
+              <span class="phase-achievement">Cultural Icon</span>
+              <span class="phase-example">(Example Content)</span>
+            </div>
           </div>
         </div>
-        <div class="timeline-item" data-year="2021">
-          <div class="timeline-content">
-            <h3>Music Career</h3>
-            <p>Released "Roadtrip" and "Mask" which became viral hits and topped music charts</p>
-            <span class="timeline-date">2021</span>
+        
+        <!-- Interactive Progress Bar -->
+        <div class="journey-progress">
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+            <div class="progress-handle" draggable="true"></div>
+          </div>
+          <div class="progress-labels">
+            <span>Phase 1</span>
+            <span>Phase 2</span>
+            <span>Phase 3</span>
+            <span>Phase 4</span>
+          </div>
+          <div class="progress-instruction">
+            <!-- Drag the handle or click on the progress bar to navigate through Dream's journey -->
+            <small>Drag the handle to explore Dream's journey phases</small>
           </div>
         </div>
-        <div class="timeline-item" data-year="2022">
-          <div class="timeline-content">
-            <h3>Face Reveal</h3>
-            <p>Historic face reveal watched by over 1 million live viewers</p>
-            <span class="timeline-date">Oct 2022</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Artist Gallery -->
+  <section id="gallery">
+    <div class="container">
+      <h2 class="section-title">Birthday Art Gallery</h2>
+      <div class="gallery-container">
+        <div class="gallery-description">
+          <p>Amazing fan art celebrating Dream's birthday! Click on any artwork to visit the artist's Twitter.</p>
+        </div>
+        
+        <!-- Featured Artwork Display -->
+        <div class="featured-artwork">
+          <div class="artwork-frame">
+            <div id="currentArtwork" class="artwork-display">
+              <div class="artwork-placeholder">
+                <div class="placeholder-content">
+                  <h3>Sample Artwork</h3>
+                  <p>This is where beautiful fan art would be displayed</p>
+                  <div class="artwork-badge">EXAMPLE</div>
+                </div>
+              </div>
+            </div>
+            <div class="artwork-info">
+              <h4 id="artworkTitle">Sample Birthday Art</h4>
+              <p id="artworkDescription">A beautiful piece celebrating Dream's special day</p>
+              <div class="artist-info">
+                <span id="artistName">Sample Artist</span>
+                <span class="artist-handle">@elevenisrising</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="gallery-controls">
+            <button id="nextArtworkBtn" class="btn btn-primary">
+              <i class="fas fa-random"></i>
+              Show Another Artwork
+            </button>
+            <button id="visitArtistBtn" class="btn btn-secondary" onclick="window.open('https://twitter.com/elevenisrising', '_blank')">
+              <i class="fab fa-twitter"></i>
+              Visit Artist
+            </button>
           </div>
         </div>
-        <div class="timeline-item" data-year="2023">
-          <div class="timeline-content">
-            <h3>Continued Success</h3>
-            <p>Maintains position as one of the most influential content creators</p>
-            <span class="timeline-date">2023+</span>
+        
+        <!-- Gallery Info -->
+        <div class="gallery-footer">
+          <p>Want to submit your artwork? Contact <a href="https://twitter.com/elevenisrising" target="_blank" class="contact-link">@elevenisrising</a> on Twitter!</p>
+          <div class="gallery-stats">
+            <span id="artworkCount">Loading...</span> amazing artworks and counting! 🎨
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Birthday Wishes -->
+  <section id="wishes">
+    <div class="container">
+      <h2 class="section-title">Birthday Wishes Wall</h2>
+      <div class="wishes-container">
+        <!-- Random Wish Display -->
+        <div class="random-wish-display">
+          <div class="wish-spotlight">
+            <div id="currentWish" class="featured-wish">
+              <div class="wish-content">
+                <p id="wishText">"Loading wish..." </p>
+                <span id="wishAuthor" class="wish-author">- Loading...</span>
+                <span class="wish-example">(Example)</span>
+              </div>
+            </div>
+            <div class="wish-controls">
+              <button id="nextWishBtn" class="btn btn-primary">
+                <i class="fas fa-random"></i>
+                Show Another Wish
+              </button>
+              <button id="addWishBtn" class="btn btn-secondary">
+                <i class="fas fa-plus"></i>
+                Add Your Wish
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Add Wish Form (Hidden by default) -->
+        <div class="wish-form-container" style="display: none;">
+          <div class="wish-form">
+            <h3>Send Your Birthday Wish</h3>
+            <textarea id="wishInput" placeholder="Write your birthday message for Dream..."></textarea>
+            <div class="form-actions">
+              <button id="submitWishBtn" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i>
+                Send Wish
+              </button>
+              <button id="cancelWishBtn" class="btn btn-secondary">
+                <i class="fas fa-times"></i>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Contact Info -->
+        <div class="wishes-footer">
+          <p>Want to update the wishes? Contact <a href="https://twitter.com/elevenisrising" target="_blank" class="contact-link">@elevenisrising</a> on Twitter!</p>
+          <div class="wishes-stats">
+            <span id="wishCount">Loading...</span> wishes and counting! 🎉
           </div>
         </div>
       </div>
@@ -273,60 +435,12 @@
           <p>@dreamwastaken<br>Behind the Scenes</p>
           <span class="follow-count">Follow</span>
         </a>
-        <a href="https://open.spotify.com/artist/5rJVTTK0mg38P0t8NLHnr2" target="_blank" class="social-card spotify">
+        <a href="https://open.spotify.com/artist/6LArUyIoMiHmDvvOAsE2cd?si=Df_A6lAnTcGyA1B6I5AMdQ" target="_blank" class="social-card spotify">
           <i class="fab fa-spotify"></i>
           <h3>Spotify</h3>
           <p>Music<br>Mask, Roadtrip & More</p>
           <span class="follow-count">Listen</span>
         </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Birthday Wishes -->
-  <section id="wishes">
-    <div class="container">
-      <h2 class="section-title">Birthday Wishes Wall</h2>
-      <div class="wishes-container">
-        <div class="wish-form-container">
-          <div class="wish-form">
-            <h3>Send Your Birthday Wish</h3>
-            <textarea id="wishInput" placeholder="Write your birthday message for Dream..."></textarea>
-            <div class="form-actions">
-              <button id="addWishBtn" class="btn btn-primary">
-                <i class="fas fa-paper-plane"></i>
-                Send Wish
-              </button>
-              <button id="clearWishesBtn" class="btn btn-secondary">
-                <i class="fas fa-trash"></i>
-                Clear All
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="wishes-display">
-          <div id="wishList" class="wish-list"></div>
-          <div class="default-wishes">
-            <div class="wish-item">
-              <div class="wish-content">
-                <p>"Happy Birthday Dream! Thanks for all the amazing content! 🎉"</p>
-                <span class="wish-author">- Fan from Twitter</span>
-              </div>
-            </div>
-            <div class="wish-item">
-              <div class="wish-content">
-                <p>"Hope you have the most amazing day! Your manhunts are legendary! 🏃‍♂️"</p>
-                <span class="wish-author">- Minecraft Community</span>
-              </div>
-            </div>
-            <div class="wish-item">
-              <div class="wish-content">
-                <p>"Thank you for inspiring so many people! Happy Birthday! 🎂"</p>
-                <span class="wish-author">- Fellow Content Creator</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
