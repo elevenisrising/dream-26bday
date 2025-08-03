@@ -31,7 +31,7 @@
   <div id="blobs-container"></div>
 
   <!-- Birthday Pull String -->
-  <div class="pull-rope-container" data-tooltip="Pull the rope for Dream blobs! 🎯">
+  <div class="pull-rope-container" data-tooltip="Pull down for a surprise!">
     <div class="rope-string">
       <div class="rope-end"></div>
     </div>
@@ -103,10 +103,6 @@
           <i class="fas fa-party-horn"></i>
           Start Celebration!
         </button>
-        <button class="btn btn-secondary" onclick="document.getElementById('birthdayAudio').play()">
-          <i class="fas fa-music"></i>
-          Play Birthday Song
-        </button>
       </div>
     </div>
     <div class="scroll-indicator">
@@ -169,34 +165,6 @@
     <div class="container">
       <h2 class="section-title">Epic Achievements Journey</h2>
       <div class="journey-container">
-        <!-- Walking Path Background -->
-        <div class="walking-path">
-          <div class="path-line"></div>
-          <div class="checkpoint" data-phase="1">
-            <div class="checkpoint-marker">1</div>
-            <div class="checkpoint-label">Early Days</div>
-          </div>
-          <div class="checkpoint" data-phase="2">
-            <div class="checkpoint-marker">2</div>
-            <div class="checkpoint-label">Rise to Fame</div>
-          </div>
-          <div class="checkpoint" data-phase="3">
-            <div class="checkpoint-marker">3</div>
-            <div class="checkpoint-label">Peak Success</div>
-          </div>
-          <div class="checkpoint" data-phase="4">
-            <div class="checkpoint-marker">4</div>
-            <div class="checkpoint-label">Legacy Era</div>
-          </div>
-        </div>
-        
-        <!-- Walking Character -->
-        <div class="walking-character">
-          <div class="character-gif">
-            <img src="assets/dreampfp.png" alt="Dream Character" class="walking-dream">
-          </div>
-        </div>
-        
         <!-- Phase Content Display -->
         <div class="phase-content">
           <div class="phase-item active" data-phase="1">
@@ -230,28 +198,30 @@
             <h3>Phase 4: Legacy Era</h3>
             <p>Face reveal, continued innovation, and lasting impact on content creation.</p>
             <div class="phase-details">
-              <span class="phase-year">2022-Present</span>
+              <span class="phase-year">2022-2024</span>
               <span class="phase-achievement">Cultural Icon</span>
               <span class="phase-example">(Example Content)</span>
             </div>
           </div>
         </div>
         
-        <!-- Interactive Progress Bar -->
+        <!-- Interactive Progress Bar with Walking Character -->
         <div class="journey-progress">
           <div class="progress-bar">
             <div class="progress-fill"></div>
-            <div class="progress-handle" draggable="true"></div>
+            <div class="walking-character-progress">
+              <div class="walking-dream-progress"></div>
+            </div>
           </div>
           <div class="progress-labels">
             <span>Phase 1</span>
             <span>Phase 2</span>
             <span>Phase 3</span>
             <span>Phase 4</span>
+            <span>To Be Continued</span>
           </div>
           <div class="progress-instruction">
-            <!-- Drag the handle or click on the progress bar to navigate through Dream's journey -->
-            <small>Drag the handle to explore Dream's journey phases</small>
+            <small>Drag Dream along his journey or click on the progress bar</small>
           </div>
         </div>
       </div>
@@ -385,16 +355,6 @@
           <div class="video-container">
             <iframe src="https://www.youtube.com/embed/Ow_PNMtMGhU" title="Dream - Roadtrip" allowfullscreen></iframe>
           </div>
-        </div>
-        <div class="media-card birthday-audio">
-          <h3>🎵 Birthday Celebration Song</h3>
-          <div class="audio-player">
-            <audio id="birthdayAudio" controls>
-              <source src="assets/birthday_song.mp3" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-          <p>A special jazz rendition to celebrate Dream's special day!</p>
         </div>
       </div>
     </div>

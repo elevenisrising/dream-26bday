@@ -887,9 +887,9 @@ section {
 }
 
 .checkpoint[data-phase="1"] { left: 0%; }
-.checkpoint[data-phase="2"] { left: 33.33%; }
-.checkpoint[data-phase="3"] { left: 66.66%; }
-.checkpoint[data-phase="4"] { left: 100%; }
+.checkpoint[data-phase="2"] { left: 25%; }
+.checkpoint[data-phase="3"] { left: 50%; }
+.checkpoint[data-phase="4"] { left: 75%; }
 
 .checkpoint-marker {
   width: 40px;
@@ -930,28 +930,7 @@ section {
   animation: pulse 2s infinite;
 }
 
-/* Walking Character */
-.walking-character {
-  position: absolute;
-  top: 15px;
-  left: 25%;
-  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 10;
-}
-
-.character-gif {
-  position: relative;
-  transform: translateX(-50%);
-}
-
-.walking-dream {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 3px solid var(--dream-green);
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
-  animation: walkBounce 0.8s ease-in-out infinite;
-}
+/* Old walking character styles removed - now using progress bar version */
 
 @keyframes walkBounce {
   0%, 100% { transform: translateX(-50%) translateY(0); }
@@ -961,6 +940,40 @@ section {
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 65, 0.5); }
   50% { box-shadow: 0 0 30px rgba(0, 255, 65, 1); }
+}
+
+/* Phase 1 Animation - Cycles through phase1_1.png to phase1_4.png */
+@keyframes phase1Animation {
+  0% { background-image: url('../assets/gif/phase1_1.png'); }
+  25% { background-image: url('../assets/gif/phase1_2.png'); }
+  50% { background-image: url('../assets/gif/phase1_3.png'); }
+  75% { background-image: url('../assets/gif/phase1_4.png'); }
+  100% { background-image: url('../assets/gif/phase1_1.png'); }
+}
+
+/* Phase 2 Animation - Cycles through phase2_1.png to phase2_4.png */
+@keyframes phase2Animation {
+  0% { background-image: url('../assets/gif/phase2_1.png'); }
+  25% { background-image: url('../assets/gif/phase2_2.png'); }
+  50% { background-image: url('../assets/gif/phase2_3.png'); }
+  75% { background-image: url('../assets/gif/phase2_4.png'); }
+  100% { background-image: url('../assets/gif/phase2_1.png'); }
+}
+
+/* Birthday Glow Animation for Rope Pull Effect */
+@keyframes birthdayGlow {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+    filter: hue-rotate(0deg);
+  }
+  33% { 
+    box-shadow: 0 0 20px rgba(255, 237, 78, 0.5);
+    filter: hue-rotate(120deg);
+  }
+  66% { 
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+    filter: hue-rotate(240deg);
+  }
 }
 
 /* Phase Content */
@@ -1042,11 +1055,9 @@ section {
 .journey-progress {
   margin-top: 3rem;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: var(--border-radius);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Progress Bar (restored to original design) */
 .progress-bar {
   position: relative;
   width: 100%;
@@ -1068,30 +1079,6 @@ section {
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.progress-handle {
-  position: absolute;
-  top: 50%;
-  left: 0%;
-  width: 20px;
-  height: 20px;
-  background: var(--dream-yellow);
-  border: 3px solid var(--dream-green);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  cursor: grab;
-  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
-}
-
-.progress-handle:hover {
-  transform: translate(-50%, -50%) scale(1.2);
-  box-shadow: 0 0 25px rgba(0, 255, 65, 0.8);
-}
-
-.progress-handle:active {
-  cursor: grabbing;
-}
-
 .progress-labels {
   display: flex;
   justify-content: space-between;
@@ -1099,6 +1086,65 @@ section {
   color: var(--dream-light);
   font-size: 0.9rem;
   font-weight: 600;
+}
+
+.progress-labels span {
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Walking Character on Progress Bar */
+.walking-character-progress {
+  position: absolute;
+  top: -100px;
+  left: 0%;
+  transform: translateX(0%);
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  cursor: grab;
+}
+
+.walking-character-progress:active {
+  cursor: grabbing;
+}
+
+.walking-dream-progress {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid var(--dream-green);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
+  background-image: url('../assets/dreampfp.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: walkBounce 0.8s ease-in-out infinite;
+}
+
+/* Phase-specific animations for progress bar character */
+.walking-dream-progress.phase-1 {
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  background-image: url('../assets/gif/phase1_1.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: phase1Animation 0.8s infinite, walkBounce 0.8s ease-in-out infinite;
+}
+
+.walking-dream-progress.phase-2 {
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  background-image: url('../assets/gif/phase2_1.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: phase2Animation 0.8s infinite, walkBounce 0.8s ease-in-out infinite;
 }
 
 .progress-instruction {

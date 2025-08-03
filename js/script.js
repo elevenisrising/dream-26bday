@@ -21,6 +21,8 @@ class DreamBirthdayApp {
             { text: "Dream Team forever! Wishing you happiness and success! Happy Birthday! 👑🎈", author: "Team Fan", example: true }
         ];
         this.currentWishIndex = 0;
+        this.availableWishIndices = [];
+        this.availableArtworkIndices = [];
         this.sampleArtworks = [
             { title: "Dream's Birthday Celebration", description: "A vibrant artwork celebrating Dream's special day with Minecraft elements", artist: "Artist Sample 1", twitter: "elevenisrising", example: true },
             { title: "Manhunt Masterpiece", description: "Epic fan art depicting Dream's legendary manhunt adventures", artist: "Artist Sample 2", twitter: "elevenisrising", example: true },
@@ -695,6 +697,9 @@ class DreamBirthdayApp {
         // Immediately set initial progress bar state to 0%
         this.goToProgressPercentage(0, false);
         
+        // Ensure phase content is updated on initial load
+        this.updatePhaseContent(1);
+        
         // Don't start autoplay immediately - wait for user to scroll to section
         this.setupJourneyVisibilityObserver();
         
@@ -711,15 +716,15 @@ class DreamBirthdayApp {
         });
         
         // Progress bar interactions
-        const progressBar = document.querySelector('.progress-bar');
-        const progressHandle = document.querySelector('.progress-handle');
+        const thinProgressBar = document.querySelector('.thin-progress-bar');
+        const walkingCharacterProgress = document.querySelector('.walking-character-progress');
         
-        if (progressBar && progressHandle) {
-            let isDragging = false;
-            
-            // Progress bar click
+        // Progress bar click handling
+        const progressBar = document.querySelector('.progress-bar');
+        if (progressBar) {
             progressBar.addEventListener('click', (e) => {
-                if (e.target === progressHandle) return;
+                // Don't trigger if clicking on the walking character
+                if (e.target.closest('.walking-character-progress')) return;
                 
                 this.pauseAutoPlay();
                 this.isUserInteracting = true;
@@ -731,17 +736,23 @@ class DreamBirthdayApp {
                 // Update current progress to clicked position
                 this.currentProgress = percentage;
                 this.goToProgressPercentage(percentage);
-                // Resume immediately, not after delay
+                
+                // Resume autoplay after interaction
                 this.isUserInteracting = false;
                 this.startAutoPlay();
             });
+        }
+        
+        // Walking character drag handling
+        if (walkingCharacterProgress && progressBar) {
+            let isDragging = false;
             
-            // Handle dragging
-            progressHandle.addEventListener('mousedown', (e) => {
+            // Mouse events
+            walkingCharacterProgress.addEventListener('mousedown', (e) => {
                 isDragging = true;
-                this.isUserInteracting = true;
                 this.pauseAutoPlay();
-                progressHandle.style.cursor = 'grabbing';
+                this.isUserInteracting = true;
+                walkingCharacterProgress.style.cursor = 'grabbing';
                 e.preventDefault();
             });
             
@@ -754,24 +765,24 @@ class DreamBirthdayApp {
                 
                 // Update current progress while dragging
                 this.currentProgress = percentage;
-                this.goToProgressPercentage(percentage, false); // Don't animate on drag
+                this.goToProgressPercentage(percentage, false); // Don't animate while dragging
             });
             
             document.addEventListener('mouseup', () => {
                 if (isDragging) {
                     isDragging = false;
                     this.isUserInteracting = false;
-                    progressHandle.style.cursor = 'grab';
-                    // Resume immediately after drag
+                    walkingCharacterProgress.style.cursor = 'grab';
+                    // Resume autoplay from current position
                     this.startAutoPlay();
                 }
             });
             
             // Touch events for mobile
-            progressHandle.addEventListener('touchstart', (e) => {
+            walkingCharacterProgress.addEventListener('touchstart', (e) => {
                 isDragging = true;
-                this.isUserInteracting = true;
                 this.pauseAutoPlay();
+                this.isUserInteracting = true;
                 e.preventDefault();
             });
             
@@ -793,7 +804,7 @@ class DreamBirthdayApp {
                 if (isDragging) {
                     isDragging = false;
                     this.isUserInteracting = false;
-                    // Resume immediately after touch drag
+                    // Resume autoplay from current position
                     this.startAutoPlay();
                 }
             });
@@ -804,7 +815,7 @@ class DreamBirthdayApp {
     goToProgressPercentage(percentage, animate = true) {
         this.currentProgress = Math.max(0, Math.min(100, percentage));
         
-        // Determine phase based on percentage ranges
+        // Determine phase based on exact boundary points
         let phase;
         if (percentage < 25) {
             phase = 1;
@@ -812,8 +823,10 @@ class DreamBirthdayApp {
             phase = 2;
         } else if (percentage < 75) {
             phase = 3;
-        } else {
+        } else if (percentage < 100) {
             phase = 4;
+        } else {
+            phase = 5;
         }
         
         // Update character position based on exact percentage
@@ -831,7 +844,7 @@ class DreamBirthdayApp {
     
     
     updateCharacterPosition(percentage) {
-        const character = document.querySelector('.walking-character');
+        const character = document.querySelector('.walking-character-progress');
         if (character) {
             // Convert percentage to left position (0% to 100%)
             const leftPosition = Math.max(0, Math.min(100, percentage));
@@ -850,39 +863,65 @@ class DreamBirthdayApp {
             activeCheckpoint.classList.add('active');
         }
         
-        // Update phase content
+        // Update phase content (only for phases 1-4)
         document.querySelectorAll('.phase-item').forEach(item => {
             item.classList.remove('active');
         });
-        const activePhaseItem = document.querySelector(`.phase-item[data-phase="${phase}"]`);
-        if (activePhaseItem) {
-            activePhaseItem.classList.add('active');
+        if (phase <= 4) {
+            const activePhaseItem = document.querySelector(`.phase-item[data-phase="${phase}"]`);
+            if (activePhaseItem) {
+                activePhaseItem.classList.add('active');
+            }
         }
         
-        // Show notification only if not user interacting
-        if (!this.isUserInteracting) {
-            this.showNotification(`🎯 Entered ${this.getPhaseTitle(phase)}!`);
+        // Update walking character animation based on phase
+        const walkingDreamProgress = document.querySelector('.walking-dream-progress');
+        if (walkingDreamProgress) {
+            // Remove all phase classes
+            walkingDreamProgress.classList.remove('phase-1', 'phase-2', 'phase-3', 'phase-4');
+            // Add current phase class for animated phases 1 and 2
+            if (phase === 1 || phase === 2) {
+                walkingDreamProgress.classList.add(`phase-${phase}`);
+                console.log(`Added phase-${phase} class to walking-dream-progress`);
+            } else {
+                console.log(`Phase ${phase}: Using default walking-dream-progress style`);
+            }
         }
+        
+        // Phase notifications disabled per user request
     }
     
     updateProgressBar(percentage, animate = true) {
+        // Update progress fill and walking character
         const progressFill = document.querySelector('.progress-fill');
-        const progressHandle = document.querySelector('.progress-handle');
+        const walkingCharacterProgress = document.querySelector('.walking-character-progress');
         
-        if (progressFill && progressHandle) {
+        // Update progress fill
+        if (progressFill) {
             if (animate) {
                 progressFill.style.width = `${percentage}%`;
-                progressHandle.style.left = `${percentage}%`;
             } else {
                 progressFill.style.transition = 'none';
-                progressHandle.style.transition = 'none';
                 progressFill.style.width = `${percentage}%`;
-                progressHandle.style.left = `${percentage}%`;
                 
                 // Re-enable transitions after a frame
                 requestAnimationFrame(() => {
                     progressFill.style.transition = '';
-                    progressHandle.style.transition = '';
+                });
+            }
+        }
+        
+        // Update walking character position
+        if (walkingCharacterProgress) {
+            if (animate) {
+                walkingCharacterProgress.style.left = `${percentage}%`;
+            } else {
+                walkingCharacterProgress.style.transition = 'none';
+                walkingCharacterProgress.style.left = `${percentage}%`;
+                
+                // Re-enable transitions after a frame
+                requestAnimationFrame(() => {
+                    walkingCharacterProgress.style.transition = '';
                 });
             }
         }
@@ -899,9 +938,10 @@ class DreamBirthdayApp {
                 // Move forward by small increments continuously
                 this.currentProgress += 0.125; // 0.125% every 100ms = 25% in 20 seconds
                 
-                // Loop back to start when reaching 100%
-                if (this.currentProgress > 100) {
-                    this.currentProgress = 0;
+                // Stop at 100% instead of looping
+                if (this.currentProgress >= 100) {
+                    this.currentProgress = 100;
+                    this.pauseAutoPlay();
                 }
                 
                 this.goToProgressPercentage(this.currentProgress, false);
@@ -999,18 +1039,24 @@ class DreamBirthdayApp {
         const allWishes = [...this.sampleWishes, ...this.wishes];
         if (allWishes.length === 0) return;
         
-        // Use crypto.getRandomValues for true randomness if available
+        // Initialize available indices if empty or if all wishes have been shown
+        if (this.availableWishIndices.length === 0) {
+            this.availableWishIndices = Array.from({length: allWishes.length}, (_, i) => i);
+        }
+        
+        // Get random index from available indices
         let randomIndex;
         if (window.crypto && window.crypto.getRandomValues) {
             const array = new Uint32Array(1);
             window.crypto.getRandomValues(array);
-            randomIndex = array[0] % allWishes.length;
+            randomIndex = array[0] % this.availableWishIndices.length;
         } else {
-            // Fallback to Math.random
-            randomIndex = Math.floor(Math.random() * allWishes.length);
+            randomIndex = Math.floor(Math.random() * this.availableWishIndices.length);
         }
         
-        const wish = allWishes[randomIndex];
+        // Get the actual wish index and remove it from available indices
+        const wishIndex = this.availableWishIndices.splice(randomIndex, 1)[0];
+        const wish = allWishes[wishIndex];
         this.displayCurrentWish(wish);
     }
     
@@ -1106,18 +1152,24 @@ class DreamBirthdayApp {
     showRandomArtwork() {
         if (this.sampleArtworks.length === 0) return;
         
-        // Use crypto.getRandomValues for true randomness if available
+        // Initialize available indices if empty or if all artworks have been shown
+        if (this.availableArtworkIndices.length === 0) {
+            this.availableArtworkIndices = Array.from({length: this.sampleArtworks.length}, (_, i) => i);
+        }
+        
+        // Get random index from available indices
         let randomIndex;
         if (window.crypto && window.crypto.getRandomValues) {
             const array = new Uint32Array(1);
             window.crypto.getRandomValues(array);
-            randomIndex = array[0] % this.sampleArtworks.length;
+            randomIndex = array[0] % this.availableArtworkIndices.length;
         } else {
-            // Fallback to Math.random
-            randomIndex = Math.floor(Math.random() * this.sampleArtworks.length);
+            randomIndex = Math.floor(Math.random() * this.availableArtworkIndices.length);
         }
         
-        const artwork = this.sampleArtworks[randomIndex];
+        // Get the actual artwork index and remove it from available indices
+        const artworkIndex = this.availableArtworkIndices.splice(randomIndex, 1)[0];
+        const artwork = this.sampleArtworks[artworkIndex];
         this.currentArtwork = artwork;
         this.displayCurrentArtwork(artwork);
     }
