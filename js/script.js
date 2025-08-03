@@ -635,7 +635,7 @@ class DreamBirthdayApp {
         // Create the alert element
         const alert = document.createElement('div');
         alert.className = 'blob-alert';
-        alert.textContent = '🎯 Blob Attack! 🎯';
+        alert.textContent = 'Blob Attack!';
         
         // Add to body
         document.body.appendChild(alert);
