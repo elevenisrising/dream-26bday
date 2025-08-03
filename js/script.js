@@ -384,13 +384,6 @@ class DreamBirthdayApp {
         this.createConfetti();
         this.triggerScreenShake();
         this.showCelebrationMessage();
-        
-        // Create extra blobs for celebration - only when celebrating
-        for (let i = 0; i < 5; i++) {
-            setTimeout(() => {
-                this.createRopeBlob();
-            }, i * 200);
-        }
     }
     
     playBirthdayAudio() {
@@ -621,14 +614,6 @@ class DreamBirthdayApp {
         // Create confetti explosion too!
         this.createConfetti();
         
-        // Add rope pull animation - no need for translation since it's positioned with 'right'
-        const rope = document.querySelector('.pull-rope-container');
-        if (rope) {
-            rope.style.animation = 'none';
-            setTimeout(() => {
-                rope.style.animation = 'birthdayGlow 3s ease-in-out infinite';
-            }, 10);
-        }
     }
     
     showBlobAlert() {
