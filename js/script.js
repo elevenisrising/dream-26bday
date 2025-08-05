@@ -807,10 +807,8 @@ class DreamBirthdayApp {
             phase = 2;
         } else if (percentage < 75) {
             phase = 3;
-        } else if (percentage < 100) {
-            phase = 4;
         } else {
-            phase = 5;
+            phase = 4;  // Stay at phase 4 even at 100%
         }
         
         // Update character position based on exact percentage
@@ -1283,12 +1281,22 @@ class DreamBirthdayApp {
         const activeThumbnail = document.querySelectorAll('.thumbnail-item')[activeIndex];
         
         if (thumbnailContainer && activeThumbnail) {
-            // Scroll the active thumbnail into view
-            activeThumbnail.scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest',
-                inline: 'center'
-            });
+            // Scroll within the thumbnail container only, don't affect page scroll
+            const containerRect = thumbnailContainer.getBoundingClientRect();
+            const thumbnailRect = activeThumbnail.getBoundingClientRect();
+            
+            // Check if thumbnail is outside the visible area of the container
+            if (thumbnailRect.left < containerRect.left || thumbnailRect.right > containerRect.right) {
+                // Calculate scroll position to center the thumbnail
+                const containerCenter = containerRect.width / 2;
+                const thumbnailCenter = thumbnailRect.width / 2;
+                const scrollLeft = thumbnailContainer.scrollLeft + (thumbnailRect.left - containerRect.left) - containerCenter + thumbnailCenter;
+                
+                thumbnailContainer.scrollTo({
+                    left: scrollLeft,
+                    behavior: 'smooth'
+                });
+            }
         }
     }
     
