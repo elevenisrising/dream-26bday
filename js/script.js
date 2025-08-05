@@ -29,6 +29,7 @@ class DreamBirthdayApp {
         this.thumbnailsPerPage = 4;
         this.availableArtworkIndices = [];  // For random selection without repeat
         this.hasUserInteractedWithGallery = false;  // Track user interaction
+        this.phaseGifsPreloaded = false;  // Track GIF preloading
         
         // Animation settings
         this.particleCount = 50;
@@ -56,7 +57,9 @@ class DreamBirthdayApp {
             this.createBlobs();
             this.startAnimationLoop();
             this.setupScrollAnimations();
+            this.preloadPhaseGifs();
             this.loadArtworksFromCSV();
+            this.loadWishesFromCSV();
             this.initWishesDisplay();
             this.setupNavigation();
             this.isInitialized = true;
@@ -999,6 +1002,41 @@ class DreamBirthdayApp {
         return titles[phase] || 'Unknown Phase';
     }
     
+    preloadPhaseGifs() {
+        // Preload all phase GIFs to prevent loading gaps
+        const phaseGifPaths = [
+            'assets/phase1.gif',
+            'assets/phase2.gif', 
+            'assets/phase3.gif',
+            'assets/phase4.gif'
+        ];
+        
+        let loadedCount = 0;
+        const totalGifs = phaseGifPaths.length;
+        
+        phaseGifPaths.forEach((path, index) => {
+            const img = new Image();
+            img.onload = () => {
+                loadedCount++;
+                console.log(`✓ Preloaded phase ${index + 1} GIF`);
+                
+                if (loadedCount === totalGifs) {
+                    this.phaseGifsPreloaded = true;
+                    console.log('✓ All phase GIFs preloaded successfully');
+                }
+            };
+            img.onerror = () => {
+                console.warn(`⚠️ Failed to preload phase ${index + 1} GIF: ${path}`);
+                loadedCount++;
+                
+                if (loadedCount === totalGifs) {
+                    this.phaseGifsPreloaded = true;
+                }
+            };
+            img.src = path;
+        });
+    }
+    
     setupScrollAnimations() {
         const observerOptions = {
             threshold: 0.1,
@@ -1163,6 +1201,35 @@ class DreamBirthdayApp {
             // Fallback to sample data
             this.createFallbackArtworks();
             this.initGalleryDisplay();
+        }
+    }
+    
+    async loadWishesFromCSV() {
+        try {
+            const response = await fetch('assets/wishes/wishes.csv');
+            const csvText = await response.text();
+            
+            // Parse CSV
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',');
+            
+            this.sampleWishes = [];
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const wish = {
+                    author: values[0],
+                    text: values[1],
+                    example: true
+                };
+                this.sampleWishes.push(wish);
+            }
+            
+            console.log(`✓ Loaded ${this.sampleWishes.length} wishes from CSV`);
+            
+        } catch (error) {
+            console.error('Error loading wishes:', error);
+            // Keep default sample wishes as fallback
+            console.log('Using fallback wishes');
         }
     }
     
