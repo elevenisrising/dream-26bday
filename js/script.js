@@ -10,16 +10,7 @@ class DreamBirthdayApp {
         this.blobs = [];
         this.confettiPieces = [];
         this.wishes = this.loadWishes();
-        this.sampleWishes = [
-            { text: "Happy Birthday Dream! Thanks for all the amazing content and endless entertainment! 🎉🎂", author: "Minecraft Fan", example: true },
-            { text: "Your manhunts are absolutely legendary! Hope you have the best birthday ever! 🏃‍♂️✨", author: "Gaming Community", example: true },
-            { text: "Thank you for inspiring millions of people around the world! Have a fantastic day! 🌟", author: "Content Creator Fan", example: true },
-            { text: "The Dream SMP was such an incredible journey to watch! Happy Birthday! 🎭🎪", author: "SMP Viewer", example: true },
-            { text: "Your music hits different! Mask and Roadtrip are on repeat! Have a great birthday! 🎵🎶", author: "Music Lover", example: true },
-            { text: "Face reveal was iconic! Thanks for sharing that moment with us! Happy Birthday! 😊🎉", author: "Long-time Fan", example: true },
-            { text: "You've changed Minecraft forever! Hope your special day is as amazing as you are! ⚡🟢", author: "Speedrun Enthusiast", example: true },
-            { text: "Dream Team forever! Wishing you happiness and success! Happy Birthday! 👑🎈", author: "Team Fan", example: true }
-        ];
+        this.sampleWishes = [];  // Will be loaded from CSV
         this.currentWishIndex = 0;
         this.availableWishIndices = [];
         this.availableArtworkIndices = [];
@@ -59,8 +50,8 @@ class DreamBirthdayApp {
             this.setupScrollAnimations();
             this.preloadPhaseGifs();
             this.loadArtworksFromCSV();
-            this.loadWishesFromCSV();
-            this.initWishesDisplay();
+            this.initWishesDisplay(); // Show loading state first
+            this.loadWishesFromImport(); // Load from imported JS data
             this.setupNavigation();
             this.isInitialized = true;
             
@@ -1058,20 +1049,41 @@ class DreamBirthdayApp {
     }
     
     initWishesDisplay() {
-        this.showRandomWish();
-        this.updateWishStats();
+        if (this.sampleWishes.length === 0) {
+            this.displayLoadingWish();
+        } else {
+            this.showRandomWish();
+            this.updateWishStats();
+        }
+    }
+    
+    displayLoadingWish() {
+        const wishText = document.getElementById('wishText');
+        const wishAuthor = document.getElementById('wishAuthor');
+        
+        if (wishText) wishText.textContent = '"Loading birthday wishes from fans..."';
+        if (wishAuthor) wishAuthor.textContent = '- Please wait';
+        
+        // Add loading animation
+        const currentWish = document.getElementById('currentWish');
+        if (currentWish) {
+            currentWish.style.opacity = '0.6';
+            currentWish.style.animation = 'pulse 2s infinite';
+        }
     }
     
     showRandomWish() {
-        const allWishes = [...this.sampleWishes, ...this.wishes];
-        if (allWishes.length === 0) return;
+        if (this.sampleWishes.length === 0) {
+            console.log('No wishes loaded yet');
+            return;
+        }
         
         // Initialize available indices if empty or if all wishes have been shown
         if (this.availableWishIndices.length === 0) {
-            this.availableWishIndices = Array.from({length: allWishes.length}, (_, i) => i);
+            this.availableWishIndices = Array.from({length: this.sampleWishes.length}, (_, i) => i);
         }
         
-        // Get random index from available indices
+        // Get truly random index from available indices
         let randomIndex;
         if (window.crypto && window.crypto.getRandomValues) {
             const array = new Uint32Array(1);
@@ -1083,7 +1095,7 @@ class DreamBirthdayApp {
         
         // Get the actual wish index and remove it from available indices
         const wishIndex = this.availableWishIndices.splice(randomIndex, 1)[0];
-        const wish = allWishes[wishIndex];
+        const wish = this.sampleWishes[wishIndex];
         this.displayCurrentWish(wish);
     }
     
@@ -1102,15 +1114,9 @@ class DreamBirthdayApp {
     displayCurrentWish(wish) {
         const wishText = document.getElementById('wishText');
         const wishAuthor = document.getElementById('wishAuthor');
-        const wishExample = document.querySelector('.wish-example');
         
         if (wishText) wishText.textContent = `"${wish.text}"`;
         if (wishAuthor) wishAuthor.textContent = `- ${wish.author}`;
-        
-        // Show/hide example badge
-        if (wishExample) {
-            wishExample.style.display = wish.example ? 'inline-block' : 'none';
-        }
     }
     
     showWishForm() {
@@ -1204,32 +1210,45 @@ class DreamBirthdayApp {
         }
     }
     
-    async loadWishesFromCSV() {
-        try {
-            const response = await fetch('assets/wishes/wishes.csv');
-            const csvText = await response.text();
+    loadWishesFromImport() {
+        // Use imported wishes data directly - no CSV loading needed
+        if (window.WISHES_DATA && window.WISHES_DATA.length > 0) {
+            console.log('📦 Loading wishes from imported data...');
+            this.sampleWishes = window.WISHES_DATA.map(wish => ({
+                author: wish.author,
+                text: wish.text,
+                example: false
+            }));
+            console.log(`✅ Loaded ${this.sampleWishes.length} wishes from wishes-data.js`);
             
-            // Parse CSV
-            const lines = csvText.trim().split('\n');
-            const headers = lines[0].split(',');
+            // Update display immediately
+            this.showRandomWish();
+            this.updateWishStats();
             
-            this.sampleWishes = [];
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',');
-                const wish = {
-                    author: values[0],
-                    text: values[1],
-                    example: true
-                };
-                this.sampleWishes.push(wish);
+            // Remove loading animation
+            const currentWish = document.getElementById('currentWish');
+            if (currentWish) {
+                currentWish.style.opacity = '1';
+                currentWish.style.animation = '';
             }
-            
-            console.log(`✓ Loaded ${this.sampleWishes.length} wishes from CSV`);
-            
-        } catch (error) {
-            console.error('Error loading wishes:', error);
-            // Keep default sample wishes as fallback
-            console.log('Using fallback wishes');
+        } else {
+            console.error('❌ No wishes data found - wishes-data.js not loaded or empty');
+            this.displayErrorWish();
+        }
+    }
+    
+    displayErrorWish() {
+        const wishText = document.getElementById('wishText');
+        const wishAuthor = document.getElementById('wishAuthor');
+        
+        if (wishText) wishText.textContent = '"Failed to load birthday wishes. Please refresh the page."';
+        if (wishAuthor) wishAuthor.textContent = '- System';
+        
+        // Remove loading animation
+        const currentWish = document.getElementById('currentWish');
+        if (currentWish) {
+            currentWish.style.opacity = '1';
+            currentWish.style.animation = '';
         }
     }
     

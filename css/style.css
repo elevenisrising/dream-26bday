@@ -634,6 +634,12 @@ body {
   font-weight: 600;
 }
 
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1342,18 +1348,21 @@ section {
 
 .wish-spotlight {
   text-align: center;
+  position: relative;
+  min-height: 450px; /* Fixed height to prevent button jumping */
 }
 
 .featured-wish {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px);
-  padding: 3rem 2rem;
+  padding: 3rem 2rem 2rem 2rem; /* Reduced bottom padding */
   border-radius: var(--border-radius);
   border: 2px solid var(--dream-green);
-  margin-bottom: 2rem;
+  margin-bottom: 3rem; /* More space for fixed buttons */
   position: relative;
   transition: all 0.5s ease;
   box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+  min-height: 200px; /* Minimum height for wish container */
 }
 
 .featured-wish:hover {
@@ -1367,6 +1376,12 @@ section {
   line-height: 1.6;
   margin-bottom: 1rem;
   font-weight: 500;
+  max-height: 120px; /* Limit text height to prevent overlap */
+  overflow-y: auto; /* Add scroll if text is too long */
+}
+
+.featured-wish .wish-content {
+  padding-bottom: 4rem; /* Space for fixed buttons */
 }
 
 .featured-wish .wish-author {
@@ -1391,6 +1406,11 @@ section {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem 0; /* Add some padding from bottom */
 }
 
 .wish-controls .btn {
