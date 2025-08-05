@@ -940,23 +940,7 @@ section {
   50% { box-shadow: 0 0 30px rgba(0, 255, 65, 1); }
 }
 
-/* Phase 1 Animation - Cycles through phase1_1.png to phase1_4.png */
-@keyframes phase1Animation {
-  0% { background-image: url('../assets/gif/phase1_1.png'); }
-  25% { background-image: url('../assets/gif/phase1_2.png'); }
-  50% { background-image: url('../assets/gif/phase1_3.png'); }
-  75% { background-image: url('../assets/gif/phase1_4.png'); }
-  100% { background-image: url('../assets/gif/phase1_1.png'); }
-}
-
-/* Phase 2 Animation - Cycles through phase2_1.png to phase2_4.png */
-@keyframes phase2Animation {
-  0% { background-image: url('../assets/gif/phase2_1.png'); }
-  25% { background-image: url('../assets/gif/phase2_2.png'); }
-  50% { background-image: url('../assets/gif/phase2_3.png'); }
-  75% { background-image: url('../assets/gif/phase2_4.png'); }
-  100% { background-image: url('../assets/gif/phase2_1.png'); }
-}
+/* Phase animations now use actual GIF files for smoother playback */
 
 /* Birthday Glow Animation for Rope Pull Effect */
 @keyframes birthdayGlow {
@@ -1118,37 +1102,31 @@ section {
 .walking-dream-progress {
   width: 120px;
   height: 120px;
-  border-radius: 50%;
-  border: 3px solid var(--dream-green);
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
-  background-image: url('../assets/dreampfp.png');
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  background-image: url('../assets/phase1.gif'); /* Default to phase 1 */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   animation: walkBounce 0.8s ease-in-out infinite;
 }
 
-/* Phase-specific animations for progress bar character */
+/* Phase-specific GIF animations */
 .walking-dream-progress.phase-1 {
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
-  background-image: url('../assets/gif/phase1_1.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  animation: phase1Animation 0.8s infinite, walkBounce 0.8s ease-in-out infinite;
+  background-image: url('../assets/phase1.gif') !important;
 }
 
 .walking-dream-progress.phase-2 {
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
-  background-image: url('../assets/gif/phase2_1.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  animation: phase2Animation 0.8s infinite, walkBounce 0.8s ease-in-out infinite;
+  background-image: url('../assets/phase2.gif') !important;
+}
+
+.walking-dream-progress.phase-3 {
+  background-image: url('../assets/phase3.gif') !important;
+}
+
+.walking-dream-progress.phase-4 {
+  background-image: url('../assets/phase4.gif') !important;
 }
 
 .progress-instruction {
@@ -1509,6 +1487,110 @@ section {
   background: radial-gradient(ellipse at center, rgba(52, 152, 219, 0.1) 0%, transparent 70%);
 }
 
+/* Thumbnail Gallery */
+.thumbnail-gallery {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.thumbnail-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  scrollbar-width: thin;
+  scrollbar-color: var(--dream-green) rgba(255, 255, 255, 0.1);
+}
+
+.thumbnail-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.thumbnail-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.thumbnail-container::-webkit-scrollbar-thumb {
+  background: var(--dream-green);
+  border-radius: 4px;
+  transition: var(--transition);
+}
+
+.thumbnail-container::-webkit-scrollbar-thumb:hover {
+  background: var(--dream-yellow);
+}
+
+.thumbnail-grid {
+  display: flex;
+  gap: 1rem;
+  min-width: fit-content;
+}
+
+.thumbnail-item {
+  flex: 0 0 200px;
+  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.thumbnail-item:hover {
+  border-color: var(--dream-green);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 255, 65, 0.3);
+}
+
+.thumbnail-item.active {
+  border-color: var(--dream-yellow);
+  box-shadow: 0 8px 25px rgba(255, 237, 78, 0.5);
+}
+
+.thumbnail-item img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbnail-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Removed thumbnail navigation buttons - now uses scrollbar */
+
+/* Enhanced artwork display */
+.artwork-display {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.artwork-display img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
 .gallery-container {
   max-width: 900px;
   margin: 0 auto;
@@ -1630,6 +1712,18 @@ section {
   font-weight: 600;
 }
 
+.artist-link {
+  color: var(--dream-green);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.artist-link:hover {
+  color: var(--dream-yellow);
+  text-shadow: 0 0 10px rgba(255, 237, 78, 0.5);
+}
+
 .artist-handle {
   color: var(--dream-blue) !important;
   font-size: 0.9rem;
@@ -1701,6 +1795,24 @@ section {
 .footer-brand p {
   color: var(--dream-light);
   opacity: 0.7;
+}
+
+.footer-brand .contact-info {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.footer-brand .contact-info .contact-link {
+  color: var(--dream-green);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.footer-brand .contact-info .contact-link:hover {
+  color: var(--dream-yellow);
+  text-shadow: 0 0 10px rgba(255, 237, 78, 0.5);
 }
 
 .footer-links {

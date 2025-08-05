@@ -234,50 +234,48 @@
       <h2 class="section-title">Birthday Art Gallery</h2>
       <div class="gallery-container">
         <div class="gallery-description">
-          <p>Amazing fan art celebrating Dream's birthday! Click on any artwork to visit the artist's Twitter.</p>
+          <p>Amazing fanart celebrating Dream's birthday! Browse through the thumbnails or click on any artwork to see it full size.</p>
         </div>
         
         <!-- Featured Artwork Display -->
         <div class="featured-artwork">
           <div class="artwork-frame">
             <div id="currentArtwork" class="artwork-display">
-              <div class="artwork-placeholder">
+              <img id="artworkImage" src="" alt="Artwork" style="display: none;">
+              <div id="artworkPlaceholder" class="artwork-placeholder">
                 <div class="placeholder-content">
-                  <h3>Sample Artwork</h3>
-                  <p>This is where beautiful fan art would be displayed</p>
-                  <div class="artwork-badge">EXAMPLE</div>
+                  <h3>Loading Gallery...</h3>
+                  <p>Beautiful fanart will be displayed here</p>
                 </div>
               </div>
             </div>
             <div class="artwork-info">
-              <h4 id="artworkTitle">Sample Birthday Art</h4>
-              <p id="artworkDescription">A beautiful piece celebrating Dream's special day</p>
-              <div class="artist-info">
-                <span id="artistName">Sample Artist</span>
-                <span class="artist-handle">@elevenisrising</span>
-              </div>
+              <p id="artworkAuthor">By Loading...</p>
+              <p id="artworkDescription">Loading artwork information...</p>
             </div>
           </div>
           
           <div class="gallery-controls">
             <button id="nextArtworkBtn" class="btn btn-primary">
               <i class="fas fa-random"></i>
-              Show Another Artwork
+              Random Art
             </button>
-            <button id="visitArtistBtn" class="btn btn-secondary" onclick="window.open('https://twitter.com/elevenisrising', '_blank')">
+            <button id="visitArtistBtn" class="btn btn-secondary">
               <i class="fab fa-twitter"></i>
               Visit Artist
             </button>
           </div>
         </div>
         
-        <!-- Gallery Info -->
-        <div class="gallery-footer">
-          <p>Want to submit your artwork? Contact <a href="https://twitter.com/elevenisrising" target="_blank" class="contact-link">@elevenisrising</a> on Twitter!</p>
-          <div class="gallery-stats">
-            <span id="artworkCount">Loading...</span> amazing artworks and counting! 🎨
+        <!-- Thumbnail Gallery (moved below artwork) -->
+        <div class="thumbnail-gallery">
+          <div class="thumbnail-container">
+            <div id="thumbnailGrid" class="thumbnail-grid">
+              <!-- Thumbnails will be loaded here by JavaScript -->
+            </div>
           </div>
         </div>
+        
       </div>
     </div>
   </section>
@@ -314,7 +312,7 @@
         <div class="wish-form-container" style="display: none;">
           <div class="wish-form">
             <h3>Send Your Birthday Wish</h3>
-            <textarea id="wishInput" placeholder="Write your birthday message for Dream..."></textarea>
+            <textarea id="wishInput" placeholder="Write your birthday message for Dream... (Note: This will only show during your current session and won't be permanently saved)"></textarea>
             <div class="form-actions">
               <button id="submitWishBtn" class="btn btn-primary">
                 <i class="fas fa-paper-plane"></i>
@@ -328,13 +326,6 @@
           </div>
         </div>
         
-        <!-- Contact Info -->
-        <div class="wishes-footer">
-          <p>Want to update the wishes? Contact <a href="https://twitter.com/elevenisrising" target="_blank" class="contact-link">@elevenisrising</a> on Twitter!</p>
-          <div class="wishes-stats">
-            <span id="wishCount">Loading...</span> wishes and counting! 🎉
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -412,6 +403,7 @@
         <div class="footer-brand">
           <h3>Dream Birthday Celebration 2025</h3>
           <p>Made with ❤️ by the Dream community</p>
+          <p class="contact-info">Found a bug? Want to submit fanart or birthday wishes? Contact <a href="https://twitter.com/elevenisrising" target="_blank" class="contact-link">@elevenisrising</a></p>
         </div>
         <div class="footer-links">
           <a href="https://www.youtube.com/@dream" target="_blank">YouTube</a>

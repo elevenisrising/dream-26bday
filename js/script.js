@@ -23,15 +23,12 @@ class DreamBirthdayApp {
         this.currentWishIndex = 0;
         this.availableWishIndices = [];
         this.availableArtworkIndices = [];
-        this.sampleArtworks = [
-            { title: "Dream's Birthday Celebration", description: "A vibrant artwork celebrating Dream's special day with Minecraft elements", artist: "Artist Sample 1", twitter: "elevenisrising", example: true },
-            { title: "Manhunt Masterpiece", description: "Epic fan art depicting Dream's legendary manhunt adventures", artist: "Artist Sample 2", twitter: "elevenisrising", example: true },
-            { title: "Dream SMP Universe", description: "Beautiful illustration of the Dream SMP world and characters", artist: "Artist Sample 3", twitter: "elevenisrising", example: true },
-            { title: "Speedrun Champion", description: "Dynamic artwork showing Dream's incredible speedrunning skills", artist: "Artist Sample 4", twitter: "elevenisrising", example: true },
-            { title: "Face Reveal Tribute", description: "Heartwarming art commemorating Dream's historic face reveal", artist: "Artist Sample 5", twitter: "elevenisrising", example: true },
-            { title: "Music & Gaming", description: "Creative piece combining Dream's music and gaming talents", artist: "Artist Sample 6", twitter: "elevenisrising", example: true }
-        ];
+        this.artworks = [];
         this.currentArtworkIndex = 0;
+        this.thumbnailOffset = 0;
+        this.thumbnailsPerPage = 4;
+        this.availableArtworkIndices = [];  // For random selection without repeat
+        this.hasUserInteractedWithGallery = false;  // Track user interaction
         
         // Animation settings
         this.particleCount = 50;
@@ -59,7 +56,7 @@ class DreamBirthdayApp {
             this.createBlobs();
             this.startAnimationLoop();
             this.setupScrollAnimations();
-            this.initGalleryDisplay();
+            this.loadArtworksFromCSV();
             this.initWishesDisplay();
             this.setupNavigation();
             this.isInitialized = true;
@@ -236,16 +233,17 @@ class DreamBirthdayApp {
         
         // Gallery interactions
         const nextArtworkBtn = document.getElementById('nextArtworkBtn');
-        const artworkDisplay = document.getElementById('currentArtwork');
+        const visitArtistBtn = document.getElementById('visitArtistBtn');
         
         if (nextArtworkBtn) {
             nextArtworkBtn.addEventListener('click', () => {
+                this.hasUserInteractedWithGallery = true;
                 this.showNextArtwork();
             });
         }
         
-        if (artworkDisplay) {
-            artworkDisplay.addEventListener('click', () => {
+        if (visitArtistBtn) {
+            visitArtistBtn.addEventListener('click', () => {
                 this.visitCurrentArtist();
             });
         }
@@ -678,6 +676,7 @@ class DreamBirthdayApp {
         this.resumeTimeout = null;
         this.isUserInteracting = false;
         this.journeyObserver = null;
+        this.availablePhaseGifs = new Set([1, 2, 3, 4]); // All phase GIFs are available
         
         // Immediately set initial progress bar state to 0%
         this.goToProgressPercentage(0, false);
@@ -864,13 +863,9 @@ class DreamBirthdayApp {
         if (walkingDreamProgress) {
             // Remove all phase classes
             walkingDreamProgress.classList.remove('phase-1', 'phase-2', 'phase-3', 'phase-4');
-            // Add current phase class for animated phases 1 and 2
-            if (phase === 1 || phase === 2) {
-                walkingDreamProgress.classList.add(`phase-${phase}`);
-                console.log(`Added phase-${phase} class to walking-dream-progress`);
-            } else {
-                console.log(`Phase ${phase}: Using default walking-dream-progress style`);
-            }
+            
+            // Try to use GIF for this phase, fall back to default if not available
+            this.setPhaseAnimation(walkingDreamProgress, phase);
         }
         
         // Phase notifications disabled per user request
@@ -983,6 +978,17 @@ class DreamBirthdayApp {
         });
         
         this.journeyObserver.observe(achievementsSection);
+    }
+    
+    // Set phase animation for walking character  
+    setPhaseAnimation(walkingDreamProgress, phase) {
+        // Always use GIF for phases 1-4
+        if (phase >= 1 && phase <= 4) {
+            walkingDreamProgress.classList.add(`phase-${phase}`);
+            console.log(`✓ Using phase-${phase} GIF animation`);
+        } else {
+            console.log(`✓ Phase ${phase}: Using default avatar`);
+        }
     }
     
     getPhaseTitle(phase) {
@@ -1129,20 +1135,129 @@ class DreamBirthdayApp {
     }
     
     // Gallery Methods
+    async loadArtworksFromCSV() {
+        try {
+            const response = await fetch('assets/artworks/artworks.csv');
+            const csvText = await response.text();
+            
+            // Parse CSV
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',');
+            
+            this.artworks = [];
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const artwork = {
+                    filename: values[0],
+                    artist: values[1],
+                    description: values[2], 
+                    link: values[3],
+                    path: `assets/artworks/${values[0]}`
+                };
+                this.artworks.push(artwork);
+            }
+            
+            console.log(`✓ Loaded ${this.artworks.length} artworks from CSV`);
+            this.initGalleryDisplay();
+            
+        } catch (error) {
+            console.error('Error loading artworks:', error);
+            // Fallback to sample data
+            this.createFallbackArtworks();
+            this.initGalleryDisplay();
+        }
+    }
+    
+    createFallbackArtworks() {
+        this.artworks = [
+            { filename: "sample_art_1.jpg", artist: "Dream Fan Artist", description: "Happy Birthday Dream! Amazing speedrun celebration art", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_1.jpg" },
+            { filename: "sample_art_2.jpg", artist: "MinecraftMaster", description: "Epic manhunt chase scene with Dream's signature moves", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_2.jpg" },
+            { filename: "sample_art_3.jpg", artist: "PixelCreator", description: "Beautiful portrait of Dream with his iconic smile", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_3.jpg" },
+            { filename: "sample_art_4.jpg", artist: "ArtisticDreamer", description: "Dream SMP birthday party with all the characters", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_4.jpg" },
+            { filename: "sample_art_5.jpg", artist: "DigitalDream", description: "Stunning face reveal tribute artwork", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_5.jpg" },
+            { filename: "sample_art_6.jpg", artist: "CreativeFan", description: "Dream's music and gaming journey combined", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_6.jpg" }
+        ];
+    }
+    
     initGalleryDisplay() {
-        this.showRandomArtwork();
+        this.buildThumbnailGallery();
+        this.showRandomArtwork();  // Start with random artwork
         this.updateArtworkStats();
     }
     
+    buildThumbnailGallery() {
+        const thumbnailGrid = document.getElementById('thumbnailGrid');
+        if (!thumbnailGrid) return;
+        
+        thumbnailGrid.innerHTML = '';
+        
+        this.artworks.forEach((artwork, index) => {
+            const thumbnailItem = document.createElement('div');
+            thumbnailItem.className = 'thumbnail-item';
+            thumbnailItem.innerHTML = `
+                <img src="${artwork.path}" alt="${artwork.description}" loading="lazy">
+                <div class="thumbnail-overlay">${artwork.artist}</div>
+            `;
+            
+            thumbnailItem.addEventListener('click', () => {
+                this.showArtwork(index);
+            });
+            
+            thumbnailGrid.appendChild(thumbnailItem);
+        });
+    }
+    
+    showArtwork(index) {
+        if (index < 0 || index >= this.artworks.length) return;
+        
+        this.currentArtworkIndex = index;
+        const artwork = this.artworks[index];
+        
+        // Update main display
+        const artworkImage = document.getElementById('artworkImage');
+        const artworkPlaceholder = document.getElementById('artworkPlaceholder');
+        const artworkTitle = document.getElementById('artworkTitle');
+        const artworkDescription = document.getElementById('artworkDescription');
+        const artistName = document.getElementById('artistName');
+        const artistHandle = document.getElementById('artistHandle');
+        
+        if (artworkImage && artworkPlaceholder) {
+            artworkImage.src = artwork.path;
+            artworkImage.style.display = 'block';
+            artworkPlaceholder.style.display = 'none';
+        }
+        
+        const artworkAuthor = document.getElementById('artworkAuthor');
+        
+        if (artworkAuthor) {
+            artworkAuthor.innerHTML = `By <a href="${artwork.link}" target="_blank" class="artist-link">${artwork.artist}</a>`;
+        }
+        if (artworkDescription) {
+            artworkDescription.textContent = artwork.description;
+        }
+        
+        // Update active thumbnail
+        document.querySelectorAll('.thumbnail-item').forEach((item, i) => {
+            item.classList.toggle('active', i === index);
+        });
+        
+        // Only scroll to thumbnail if user has interacted with gallery
+        if (this.hasUserInteractedWithGallery) {
+            this.scrollToActiveThumbnail();
+        }
+        
+        console.log(`🎨 Showing artwork ${index + 1}: ${artwork.description}`);
+    }
+    
     showRandomArtwork() {
-        if (this.sampleArtworks.length === 0) return;
+        if (this.artworks.length === 0) return;
         
         // Initialize available indices if empty or if all artworks have been shown
         if (this.availableArtworkIndices.length === 0) {
-            this.availableArtworkIndices = Array.from({length: this.sampleArtworks.length}, (_, i) => i);
+            this.availableArtworkIndices = Array.from({length: this.artworks.length}, (_, i) => i);
         }
         
-        // Get random index from available indices
+        // Get truly random index from available indices
         let randomIndex;
         if (window.crypto && window.crypto.getRandomValues) {
             const array = new Uint32Array(1);
@@ -1154,50 +1269,39 @@ class DreamBirthdayApp {
         
         // Get the actual artwork index and remove it from available indices
         const artworkIndex = this.availableArtworkIndices.splice(randomIndex, 1)[0];
-        const artwork = this.sampleArtworks[artworkIndex];
-        this.currentArtwork = artwork;
-        this.displayCurrentArtwork(artwork);
+        this.showArtwork(artworkIndex);
     }
-    
+
     showNextArtwork() {
-        const currentArtwork = document.getElementById('currentArtwork');
-        if (currentArtwork) {
-            currentArtwork.classList.add('artwork-changing');
-            
-            setTimeout(() => {
-                this.showRandomArtwork();
-                currentArtwork.classList.remove('artwork-changing');
-            }, 300);
-        }
+        // For next button, use random selection
+        this.showRandomArtwork();
     }
     
-    displayCurrentArtwork(artwork) {
-        const artworkTitle = document.getElementById('artworkTitle');
-        const artworkDescription = document.getElementById('artworkDescription');
-        const artistName = document.getElementById('artistName');
-        const visitButton = document.getElementById('visitArtistBtn');
+    scrollToActiveThumbnail() {
+        const activeIndex = this.currentArtworkIndex;
+        const thumbnailContainer = document.querySelector('.thumbnail-container');
+        const activeThumbnail = document.querySelectorAll('.thumbnail-item')[activeIndex];
         
-        if (artworkTitle) artworkTitle.textContent = artwork.title;
-        if (artworkDescription) artworkDescription.textContent = artwork.description;
-        if (artistName) artistName.textContent = artwork.artist;
-        
-        // Update visit button
-        if (visitButton) {
-            visitButton.onclick = () => {
-                window.open(`https://twitter.com/${artwork.twitter}`, '_blank');
-            };
+        if (thumbnailContainer && activeThumbnail) {
+            // Scroll the active thumbnail into view
+            activeThumbnail.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            });
         }
     }
     
     visitCurrentArtist() {
-        if (this.currentArtwork && this.currentArtwork.twitter) {
-            window.open(`https://twitter.com/${this.currentArtwork.twitter}`, '_blank');
-            this.showNotification('🎨 Visiting artist\'s Twitter! Support our amazing creators!');
+        if (this.artworks[this.currentArtworkIndex]) {
+            const artwork = this.artworks[this.currentArtworkIndex];
+            window.open(artwork.link, '_blank');
+            this.showNotification('🎨 Visiting artist\'s link! Support our amazing creators!');
         }
     }
     
     updateArtworkStats() {
-        const totalArtworks = this.sampleArtworks.length;
+        const totalArtworks = this.artworks.length;
         const artworkCount = document.getElementById('artworkCount');
         if (artworkCount) {
             artworkCount.textContent = totalArtworks;
