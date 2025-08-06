@@ -49,7 +49,7 @@ class DreamBirthdayApp {
             this.startAnimationLoop();
             this.setupScrollAnimations();
             this.preloadPhaseGifs();
-            this.loadArtworksFromCSV();
+            this.loadArtworksFromImport();
             this.initWishesDisplay(); // Show loading state first
             this.loadWishesFromImport(); // Load from imported JS data
             this.setupNavigation();
@@ -1177,36 +1177,22 @@ class DreamBirthdayApp {
     }
     
     // Gallery Methods
-    async loadArtworksFromCSV() {
-        try {
-            const response = await fetch('assets/artworks/artworks.csv');
-            const csvText = await response.text();
-            
-            // Parse CSV
-            const lines = csvText.trim().split('\n');
-            const headers = lines[0].split(',');
-            
-            this.artworks = [];
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',');
-                const artwork = {
-                    filename: values[0],
-                    artist: values[1],
-                    description: values[2], 
-                    link: values[3],
-                    path: `assets/artworks/${values[0]}`
-                };
-                this.artworks.push(artwork);
-            }
-            
-            console.log(`✓ Loaded ${this.artworks.length} artworks from CSV`);
+    loadArtworksFromImport() {
+        // Use imported artworks data directly - no CSV loading needed
+        if (window.ARTWORKS_DATA && window.ARTWORKS_DATA.length > 0) {
+            console.log('🎨 Loading artworks from imported data...');
+            this.artworks = window.ARTWORKS_DATA.map(artwork => ({
+                filename: artwork.filename,
+                artist: artwork.artist,
+                description: artwork.description,
+                link: artwork.link,
+                path: artwork.path
+            }));
+            console.log(`✅ Loaded ${this.artworks.length} artworks from artworks-data.js`);
             this.initGalleryDisplay();
-            
-        } catch (error) {
-            console.error('Error loading artworks:', error);
-            // Fallback to sample data
-            this.createFallbackArtworks();
-            this.initGalleryDisplay();
+        } else {
+            console.error('❌ No artworks data found - artworks-data.js not loaded or empty');
+            this.displayErrorArtwork();
         }
     }
     
@@ -1252,16 +1238,21 @@ class DreamBirthdayApp {
         }
     }
     
-    createFallbackArtworks() {
-        this.artworks = [
-            { filename: "sample_art_1.jpg", artist: "Dream Fan Artist", description: "Happy Birthday Dream! Amazing speedrun celebration art", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_1.jpg" },
-            { filename: "sample_art_2.jpg", artist: "MinecraftMaster", description: "Epic manhunt chase scene with Dream's signature moves", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_2.jpg" },
-            { filename: "sample_art_3.jpg", artist: "PixelCreator", description: "Beautiful portrait of Dream with his iconic smile", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_3.jpg" },
-            { filename: "sample_art_4.jpg", artist: "ArtisticDreamer", description: "Dream SMP birthday party with all the characters", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_4.jpg" },
-            { filename: "sample_art_5.jpg", artist: "DigitalDream", description: "Stunning face reveal tribute artwork", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_5.jpg" },
-            { filename: "sample_art_6.jpg", artist: "CreativeFan", description: "Dream's music and gaming journey combined", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_6.jpg" }
-        ];
+    displayErrorArtwork() {
+        const artworkImage = document.getElementById('artworkImage');
+        const artworkPlaceholder = document.getElementById('artworkPlaceholder');
+        const artworkAuthor = document.getElementById('artworkAuthor');
+        const artworkDescription = document.getElementById('artworkDescription');
+        
+        if (artworkImage) artworkImage.style.display = 'none';
+        if (artworkPlaceholder) {
+            artworkPlaceholder.style.display = 'block';
+            artworkPlaceholder.textContent = 'Failed to load artworks';
+        }
+        if (artworkAuthor) artworkAuthor.textContent = 'System Error';
+        if (artworkDescription) artworkDescription.textContent = 'Failed to load artwork data. Please refresh the page.';
     }
+    
     
     initGalleryDisplay() {
         this.buildThumbnailGallery();
