@@ -48,16 +48,14 @@ def create_gif_from_frames(frames_folder, output_path, duration=200):
             print("No valid frames loaded")
             return False
             
-        # Save as GIF
+        # Save as GIF with proper transparency handling
         frames[0].save(
             output_path,
             save_all=True,
             append_images=frames[1:],
             duration=duration,  # milliseconds per frame
             loop=0,  # infinite loop
-            optimize=True,
-            transparency=0,
-            disposal=2  # restore background
+            disposal=1  # Don't dispose - keeps transparency
         )
         
         print(f"Created GIF: {output_path} with {len(frames)} frames")
@@ -142,6 +140,7 @@ def generate_all_phase_gifs(frame_duration=200, add_intermediate_frames=True):
                 img = Image.open(frame_path)
                 if img.mode != 'RGBA':
                     img = img.convert('RGBA')
+                
                 frames.append(img)
             
             if frames:
@@ -158,15 +157,14 @@ def generate_all_phase_gifs(frame_duration=200, add_intermediate_frames=True):
                     frames = smooth_frames
                     print(f"✓ Added intermediate frames: {len(frames)} total frames")
                 
+                # Keep frames in RGBA mode to preserve transparency
                 frames[0].save(
                     output_gif,
                     save_all=True,
                     append_images=frames[1:],
-                    duration=frame_duration,  # Keep original timing even with more frames
+                    duration=frame_duration,
                     loop=0,
-                    optimize=True,
-                    transparency=0,
-                    disposal=2
+                    disposal=2  # Don't dispose - keeps transparency and avoids black flicker
                 )
                 print(f"✓ Created: {output_gif}")
             else:

@@ -9,7 +9,7 @@
   <title>🎉 Happy Birthday Dream! 🎂</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Fredoka+One:wght@400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="stylesheet" href="css/style.css?v=20250806" />
+  <link rel="stylesheet" href="css/style.css" />\n  <script>\n    // Add timestamp to CSS and JS files for stronger cache busting\n    document.addEventListener('DOMContentLoaded', function() {\n      const timestamp = Date.now();\n      // Update CSS link\n      const cssLink = document.querySelector('link[href=\"css/style.css\"]');\n      if (cssLink) {\n        cssLink.href = 'css/style.css?v=' + timestamp;\n      }\n      // Update JS scripts\n      const scripts = document.querySelectorAll('script[src]');\n      scripts.forEach(script => {\n        const src = script.getAttribute('src');\n        if (src && src.includes('.js') && !src.includes('?v=')) {\n          script.src = src + '?v=' + timestamp;\n        }\n      });\n    });\n  </script>
   <link rel="icon" href="assets/dreampfp.png" type="image/png" />
 </head>
 <body>
@@ -174,40 +174,31 @@
         <!-- Phase Content Display -->
         <div class="phase-content">
           <div class="phase-item active" data-phase="1">
-            <h3>Phase 1: Early Days</h3>
-            <p>Dream starts his YouTube journey with early Minecraft content and speedruns.</p>
-            <div class="phase-details">
-              <span class="phase-year">2019-2020</span>
-              <span class="phase-achievement">Channel Foundation</span>
-              <span class="phase-example">(Example Content)</span>
-            </div>
+            <h3>Phase 1: Foundation Era <span class="phase-year-inline">None</span></h3>
+            <p>None</p>
           </div>
           <div class="phase-item" data-phase="2">
-            <h3>Phase 2: Rise to Fame</h3>
-            <p>The iconic Manhunt series launches, revolutionizing Minecraft content.</p>
-            <div class="phase-details">
-              <span class="phase-year">2020-2021</span>
-              <span class="phase-achievement">Manhunt Mastery</span>
-              <span class="phase-example">(Example Content)</span>
-            </div>
+            <h3>Phase 2: Early Content Era <span class="phase-year-inline">None</span></h3>
+            <p>None</p>
           </div>
           <div class="phase-item" data-phase="3">
-            <h3>Phase 3: Peak Success</h3>
-            <p>Music career begins, Dream SMP flourishes, reaching global recognition.</p>
-            <div class="phase-details">
-              <span class="phase-year">2021-2022</span>
-              <span class="phase-achievement">Multi-Media Star</span>
-              <span class="phase-example">(Example Content)</span>
-            </div>
+            <h3>Phase 3: Manhunt Era <span class="phase-year-inline">None</span></h3>
+            <p>None</p>
           </div>
           <div class="phase-item" data-phase="4">
-            <h3>Phase 4: Legacy Era</h3>
-            <p>Face reveal, continued innovation, and lasting impact on content creation.</p>
-            <div class="phase-details">
-              <span class="phase-year">2022-2024</span>
-              <span class="phase-achievement">Cultural Icon</span>
-              <span class="phase-example">(Example Content)</span>
-            </div>
+            <h3>Phase 4: DreamSMP Era <span class="phase-year-inline">None</span></h3>
+            <p>None</p>
+          </div>
+          <div class="phase-item" data-phase="5">
+            <h3>Phase 5: MCC Era <span class="phase-year-inline">None</span></h3>
+            <p>None</p>
+          </div>
+          <div class="phase-item" data-phase="6">
+            <h3>Phase 6: Face Reveal Era <span class="phase-year-inline">None</span></h3>
+            <p>None</p>
+          </div>
+          <div class="phase-item" data-phase="7">
+            <h3>To Be Continued...</h3>
           </div>
         </div>
         
@@ -218,13 +209,23 @@
             <div class="walking-character-progress">
               <div class="walking-dream-progress"></div>
             </div>
+            <!-- Checkpoint markers for phases -->
+            <div class="checkpoint" data-phase="1" style="left: 0%;"></div>
+            <div class="checkpoint" data-phase="2" style="left: 16.67%;"></div>
+            <div class="checkpoint" data-phase="3" style="left: 33.33%;"></div>
+            <div class="checkpoint" data-phase="4" style="left: 50%;"></div>
+            <div class="checkpoint" data-phase="5" style="left: 66.67%;"></div>
+            <div class="checkpoint" data-phase="6" style="left: 83.33%;"></div>
+            <div class="checkpoint" data-phase="7" style="left: 100%;"></div>
           </div>
           <div class="progress-labels">
             <span>Phase 1</span>
             <span>Phase 2</span>
             <span>Phase 3</span>
             <span>Phase 4</span>
-            <span>To Be Continued</span>
+            <span>Phase 5</span>
+            <span>Phase 6</span>
+            <span>TBC</span>
           </div>
           <div class="progress-instruction">
             <small>Drag Dream along his journey or click on the progress bar</small>
@@ -427,8 +428,9 @@
   <div id="confetti-container"></div>
 
   <!-- Scripts -->
-  <script src="js/wishes-data.js?v=20250806"></script>
-  <script src="js/artworks-data.js?v=20250806"></script>
-  <script src="js/script.js?v=20250806"></script>
+  <script src="js/wishes-data.js"></script>
+  <script src="js/artworks-data.js"></script>
+  <script src="js/script.js"></script>
+  
 </body>
 </html>

@@ -670,7 +670,7 @@ class DreamBirthdayApp {
         this.resumeTimeout = null;
         this.isUserInteracting = false;
         this.journeyObserver = null;
-        this.availablePhaseGifs = new Set([1, 2, 3, 4]); // All phase GIFs are available
+        this.availablePhaseGifs = new Set([1, 2, 3, 4, 5, 6]); // All phase GIFs are available
         
         // Immediately set initial progress bar state to 0%
         this.goToProgressPercentage(0, false);
@@ -686,7 +686,7 @@ class DreamBirthdayApp {
             checkpoint.addEventListener('click', () => {
                 this.pauseAutoPlay();
                 const phase = parseInt(checkpoint.dataset.phase);
-                const percentage = (phase - 1) * 25 + 12.5; // Center of each phase
+                const percentage = (phase - 1) * 16.67 + 8.33; // Center of each phase (100/6 = 16.67%)
                 this.currentProgress = percentage;
                 this.goToProgressPercentage(percentage);
                 this.resumeAutoPlayAfterDelay();
@@ -795,14 +795,20 @@ class DreamBirthdayApp {
         
         // Determine phase based on exact boundary points
         let phase;
-        if (percentage < 25) {
+        if (percentage < 16.67) {
             phase = 1;
-        } else if (percentage < 50) {
+        } else if (percentage < 33.33) {
             phase = 2;
-        } else if (percentage < 75) {
+        } else if (percentage < 50) {
             phase = 3;
+        } else if (percentage < 66.67) {
+            phase = 4;
+        } else if (percentage < 83.33) {
+            phase = 5;
+        } else if (percentage < 100) {
+            phase = 6;
         } else {
-            phase = 4;  // Stay at phase 4 even at 100%
+            phase = 7;  // TBC phase (only at 100%)
         }
         
         // Update character position based on exact percentage
@@ -839,11 +845,11 @@ class DreamBirthdayApp {
             activeCheckpoint.classList.add('active');
         }
         
-        // Update phase content (only for phases 1-4)
+        // Update phase content (phases 1-6 show content, phase 7 shows TBC)
         document.querySelectorAll('.phase-item').forEach(item => {
             item.classList.remove('active');
         });
-        if (phase <= 4) {
+        if (phase <= 7) {
             const activePhaseItem = document.querySelector(`.phase-item[data-phase="${phase}"]`);
             if (activePhaseItem) {
                 activePhaseItem.classList.add('active');
@@ -854,7 +860,7 @@ class DreamBirthdayApp {
         const walkingDreamProgress = document.querySelector('.walking-dream-progress');
         if (walkingDreamProgress) {
             // Remove all phase classes
-            walkingDreamProgress.classList.remove('phase-1', 'phase-2', 'phase-3', 'phase-4');
+            walkingDreamProgress.classList.remove('phase-1', 'phase-2', 'phase-3', 'phase-4', 'phase-5', 'phase-6', 'phase-7');
             
             // Try to use GIF for this phase, fall back to default if not available
             this.setPhaseAnimation(walkingDreamProgress, phase);
@@ -908,7 +914,7 @@ class DreamBirthdayApp {
         this.autoPlayTimer = setInterval(() => {
             if (!this.isUserInteracting) {
                 // Move forward by small increments continuously
-                this.currentProgress += 0.125; // 0.125% every 100ms = 25% in 20 seconds
+                this.currentProgress += 0.125; // 0.125% every 100ms = 16.67% in ~13.3 seconds per phase
                 
                 // Stop at 100% instead of looping
                 if (this.currentProgress >= 100) {
@@ -974,8 +980,8 @@ class DreamBirthdayApp {
     
     // Set phase animation for walking character  
     setPhaseAnimation(walkingDreamProgress, phase) {
-        // Always use GIF for phases 1-4
-        if (phase >= 1 && phase <= 4) {
+        // Always use GIF for phases 1-7, phase 7 uses phase 6 gif
+        if (phase >= 1 && phase <= 7) {
             walkingDreamProgress.classList.add(`phase-${phase}`);
             console.log(`✓ Using phase-${phase} GIF animation`);
         } else {
@@ -985,10 +991,13 @@ class DreamBirthdayApp {
     
     getPhaseTitle(phase) {
         const titles = {
-            1: 'Early Days Era',
-            2: 'Rise to Fame Era',
-            3: 'Peak Success Era',
-            4: 'Legacy Era'
+            1: 'Foundation Era',
+            2: 'Early Content Era',
+            3: 'Manhunt Era',
+            4: 'DreamSMP Era',
+            5: 'MCC Era',
+            6: 'Face Reveal Era',
+            7: 'To Be Continued'
         };
         return titles[phase] || 'Unknown Phase';
     }
@@ -999,7 +1008,9 @@ class DreamBirthdayApp {
             'assets/phase1.gif',
             'assets/phase2.gif', 
             'assets/phase3.gif',
-            'assets/phase4.gif'
+            'assets/phase4.gif',
+            'assets/phase5.gif',
+            'assets/phase6.gif'
         ];
         
         let loadedCount = 0;
