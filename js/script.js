@@ -371,11 +371,102 @@ class DreamBirthdayApp {
         }, 10000);
     }
     
+    createBalloonBlobAnimation() {
+        // Create balloon blob element
+        const balloonBlob = document.createElement('img');
+        balloonBlob.src = 'assets/blob/balloon.png'; // assuming balloon blob is in blob folder
+        balloonBlob.className = 'balloon-blob-animation';
+        balloonBlob.alt = 'Dream Balloon';
+        
+        // Initial positioning at bottom center with 5x size (120px -> 600px)
+        balloonBlob.style.cssText = `
+            position: fixed;
+            bottom: -300px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            z-index: 10001;
+            opacity: 1;
+            transition: none;
+        `;
+        
+        document.body.appendChild(balloonBlob);
+        
+        // Start floating animation
+        setTimeout(() => {
+            balloonBlob.style.transition = 'bottom 4s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 4s ease-in-out';
+            balloonBlob.style.bottom = '30vh'; // Float to slightly lower than 1/2 screen height
+            balloonBlob.style.transform = 'translateX(-50%) scale(1.1) rotate(5deg)';
+        }, 100);
+        
+        // Show birthdayDream text when balloon reaches 4/5 position
+        setTimeout(() => {
+            this.showBirthdayDreamText();
+        }, 2000); // Show text halfway through animation
+        
+        // Remove balloon after animation
+        setTimeout(() => {
+            balloonBlob.style.transition = 'opacity 1s ease-out, transform 1s ease-out';
+            balloonBlob.style.opacity = '0';
+            balloonBlob.style.transform = 'translateX(-50%) scale(0.8) rotate(15deg)';
+            
+            setTimeout(() => {
+                if (document.body.contains(balloonBlob)) {
+                    document.body.removeChild(balloonBlob);
+                }
+            }, 1000);
+        }, 5000);
+    }
+    
+    showBirthdayDreamText() {
+        const birthdayText = document.createElement('div');
+        birthdayText.className = 'birthday-dream-text';
+        birthdayText.textContent = 'Happy Birthday Dream!';
+        
+        birthdayText.style.cssText = `
+            position: fixed;
+            bottom: 15vh; /* Moved down more to match balloon position */
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: #00ff41; /* Dream's signature green, no outline */
+            text-shadow: 4px 4px 16px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 255, 65, 0.6); /* Strong shadow + green glow */
+            z-index: 10002;
+            text-align: center;
+            white-space: nowrap;
+            pointer-events: none;
+            font-style: italic; /* Cursive style */
+            letter-spacing: 2px; /* Better spacing for decorative text */
+        `;
+        
+        document.body.appendChild(birthdayText);
+        
+        // Pop in animation
+        setTimeout(() => {
+            birthdayText.style.transition = 'transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            birthdayText.style.transform = 'translateX(-50%) scale(1)';
+        }, 100);
+        
+        // Remove text after display
+        setTimeout(() => {
+            birthdayText.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out';
+            birthdayText.style.transform = 'translateX(-50%) scale(0.8)';
+            birthdayText.style.opacity = '0';
+            
+            setTimeout(() => {
+                if (document.body.contains(birthdayText)) {
+                    document.body.removeChild(birthdayText);
+                }
+            }, 500);
+        }, 3000);
+    }
+    
     startCelebration() {
-        this.playBirthdayAudio();
-        this.createConfetti();
+        this.createBalloonBlobAnimation();
         this.triggerScreenShake();
-        this.showCelebrationMessage();
     }
     
     playBirthdayAudio() {
@@ -578,30 +669,30 @@ class DreamBirthdayApp {
         // Show blob alert message
         this.showBlobAlert();
         
-        // Create LOTS of blobs falling from the rope - birthday explosion!
-        for (let i = 0; i < 20; i++) {
+        // Create more blobs for more fun - first wave
+        for (let i = 0; i < 25; i++) {
             setTimeout(() => {
-                this.createRopeBlob();
-            }, i * 50); // Faster intervals for more intensity
+                this.createFunnyRopeBlob();
+            }, i * 80); // Reduced timing for more frequent spawning
         }
         
-        // Add more blobs in waves
+        // Second wave - different timing for chaos
+        setTimeout(() => {
+            for (let i = 0; i < 18; i++) {
+                setTimeout(() => {
+                    this.createFunnyRopeBlob();
+                }, i * 120);
+            }
+        }, 500);
+        
+        // Third wave for extra chaos
         setTimeout(() => {
             for (let i = 0; i < 15; i++) {
                 setTimeout(() => {
-                    this.createRopeBlob();
-                }, i * 80);
+                    this.createFunnyRopeBlob();
+                }, i * 150);
             }
         }, 1000);
-        
-        // Final wave of blobs
-        setTimeout(() => {
-            for (let i = 0; i < 10; i++) {
-                setTimeout(() => {
-                    this.createRopeBlob();
-                }, i * 120);
-            }
-        }, 2000);
         
         // Create confetti explosion too!
         this.createConfetti();
@@ -612,17 +703,143 @@ class DreamBirthdayApp {
         // Create the alert element
         const alert = document.createElement('div');
         alert.className = 'blob-alert';
-        alert.textContent = 'Blob Attack!';
+        const text = 'Blob Attack!';
         
         // Add to body
         document.body.appendChild(alert);
+        
+        // Typewriter effect - show characters one by one
+        let currentIndex = 0;
+        const typeInterval = setInterval(() => {
+            alert.textContent = text.substring(0, currentIndex + 1);
+            currentIndex++;
+            
+            if (currentIndex >= text.length) {
+                clearInterval(typeInterval);
+            }
+        }, 100); // Show one character every 100ms
         
         // Remove after animation completes
         setTimeout(() => {
             if (alert && alert.parentNode) {
                 alert.parentNode.removeChild(alert);
             }
-        }, 3000);
+        }, 4000); // Extended time to account for typing
+    }
+    
+    createFunnyRopeBlob() {
+        const container = document.getElementById('blobs-container');
+        if (!container) return;
+        
+        // Choose random blob from the three funny ones
+        const funnyBlobs = [
+            'assets/blob/Sapnap.png',
+            'assets/blob/gogy.png', 
+            'assets/blob/horn.png'
+        ];
+        
+        const randomBlobIndex = Math.floor(Math.random() * funnyBlobs.length);
+        const selectedBlob = funnyBlobs[randomBlobIndex];
+        
+        const blob = document.createElement('img');
+        blob.src = selectedBlob;
+        blob.className = 'blob funny-rope-blob dream-blob-image';
+        blob.alt = 'Funny Dream Blob';
+        
+        // Full screen positioning - spread across entire width
+        const x = Math.random() * (window.innerWidth - 100); // Full width minus blob size margin
+        
+        // Random sizes with higher proportion of larger blobs
+        const sizeOptions = [25, 35, 45, 60, 80, 100, 120]; // Added more large sizes
+        const weights = [1, 1, 2, 3, 4, 3, 2]; // Higher weights for larger sizes
+        
+        // Weighted random selection
+        const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+        let random = Math.random() * totalWeight;
+        let selectedIndex = 0;
+        
+        for (let i = 0; i < weights.length; i++) {
+            random -= weights[i];
+            if (random <= 0) {
+                selectedIndex = i;
+                break;
+            }
+        }
+        
+        const size = sizeOptions[selectedIndex];
+        
+        // Random starting heights for staggered entry
+        const startHeight = -60 - (Math.random() * 100);
+        
+        blob.style.position = 'fixed'; // Use fixed positioning to ensure full screen coverage
+        blob.style.left = `${x}px`;
+        blob.style.top = `${startHeight}px`;
+        blob.style.width = `${size}px`;
+        blob.style.height = `${size}px`;
+        
+        // Funny rotation and animation variations
+        const rotationSpeed = Math.random() * 720 + 360; // 360-1080 degrees
+        const fallDuration = 10; // Fixed 10 seconds for proper fall time
+        const horizontalDrift = (Math.random() - 0.5) * 200; // side drift for chaos
+        
+        blob.style.animation = `funnyBlobFall ${fallDuration}s linear forwards`;
+        blob.style.transform = `rotate(${Math.random() * 360}deg)`;
+        blob.style.opacity = '0.9';
+        blob.style.zIndex = '1000';
+        
+        // Add funny bounce and wiggle keyframes dynamically
+        const animationId = 'funnyBlobFall' + Math.floor(Math.random() * 1000);
+        const keyframes = `
+            @keyframes ${animationId} {
+                0% { 
+                    transform: translateY(0px) translateX(0px) rotate(0deg) scale(0.5); 
+                    opacity: 0; 
+                }
+                10% { 
+                    transform: translateY(10vh) translateX(${horizontalDrift * 0.2}px) rotate(${rotationSpeed * 0.1}deg) scale(1.2); 
+                    opacity: 1; 
+                }
+                30% { 
+                    transform: translateY(30vh) translateX(${horizontalDrift * 0.5}px) rotate(${rotationSpeed * 0.3}deg) scale(0.8); 
+                }
+                60% { 
+                    transform: translateY(70vh) translateX(${horizontalDrift * 0.8}px) rotate(${rotationSpeed * 0.6}deg) scale(1.1); 
+                }
+                90% { 
+                    transform: translateY(100vh) translateX(${horizontalDrift}px) rotate(${rotationSpeed * 0.9}deg) scale(0.9); 
+                    opacity: 0.8; 
+                }
+                100% { 
+                    transform: translateY(120vh) translateX(${horizontalDrift}px) rotate(${rotationSpeed}deg) scale(0.7); 
+                    opacity: 0; 
+                }
+            }
+        `;
+        
+        // Add the keyframes to the document
+        const style = document.createElement('style');
+        style.textContent = keyframes;
+        document.head.appendChild(style);
+        
+        // Apply the unique animation
+        blob.style.animation = `${animationId} ${fallDuration}s linear forwards`;
+        
+        container.appendChild(blob);
+        this.blobs.push(blob);
+        
+        // Remove blob after animation
+        setTimeout(() => {
+            if (container.contains(blob)) {
+                container.removeChild(blob);
+                this.blobs = this.blobs.filter(b => b !== blob);
+            }
+            // Clean up the style element
+            if (document.head.contains(style)) {
+                document.head.removeChild(style);
+            }
+        }, (fallDuration + 1) * 1000);
+        
+        console.log(`🤪 Funny ${selectedBlob} blob deployed with chaos!`);
     }
     
     createRopeBlob() {
@@ -659,7 +876,7 @@ class DreamBirthdayApp {
                 container.removeChild(blob);
                 this.blobs = this.blobs.filter(b => b !== blob);
             }
-        }, 4000);
+        }, 10000);
     }
     
     setupJourneyInteractions() {
@@ -674,6 +891,10 @@ class DreamBirthdayApp {
         
         // Immediately set initial progress bar state to 0%
         this.goToProgressPercentage(0, false);
+        
+        // Set initial brand icon to first smile image  
+        this.updateBrandIcon(1);
+        
         
         // Ensure phase content is updated on initial load
         this.updatePhaseContent(1);
@@ -828,9 +1049,10 @@ class DreamBirthdayApp {
     updateCharacterPosition(percentage) {
         const character = document.querySelector('.walking-character-progress');
         if (character) {
-            // Convert percentage to left position (0% to 100%)
+            // Convert percentage to left position (0% to 100%) with center alignment
             const leftPosition = Math.max(0, Math.min(100, percentage));
             character.style.left = `${leftPosition}%`;
+            character.style.transform = 'translateX(-50%)';
             console.log(`🚶 Dream moved to ${leftPosition}%`);
         }
     }
@@ -866,8 +1088,36 @@ class DreamBirthdayApp {
             this.setPhaseAnimation(walkingDreamProgress, phase);
         }
         
+        // Update brand icon based on phase (cycle through smile images)
+        this.updateBrandIcon(phase);
+        
         // Phase notifications disabled per user request
     }
+    
+    // Update brand icon - fixed to use IMG_6923.png  
+    updateBrandIcon(phase) {
+        const brandIcon = document.querySelector('.brand-icon svg');
+        if (!brandIcon) return;
+        
+        // Always use IMG_6923.png for brand icon
+        const fixedImageSrc = 'assets/smiles/IMG_6923.png';
+        
+        // Replace SVG with image
+        const brandIconContainer = document.querySelector('.brand-icon');
+        if (brandIconContainer) {
+            brandIconContainer.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            brandIconContainer.style.opacity = '0.5';
+            brandIconContainer.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                brandIconContainer.innerHTML = `<img src="${fixedImageSrc}" alt="Dream Icon" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; background: white; padding: 2px; border: 2px solid var(--dream-green); margin-top: 3px;">`;
+                brandIconContainer.style.opacity = '1';
+                brandIconContainer.style.transform = 'scale(1)';
+                console.log(`😊 Brand icon set to fixed: ${fixedImageSrc}`);
+            }, 150);
+        }
+    }
+    
     
     updateProgressBar(percentage, animate = true) {
         // Update progress fill and walking character
@@ -893,9 +1143,11 @@ class DreamBirthdayApp {
         if (walkingCharacterProgress) {
             if (animate) {
                 walkingCharacterProgress.style.left = `${percentage}%`;
+                walkingCharacterProgress.style.transform = 'translateX(-50%)';
             } else {
                 walkingCharacterProgress.style.transition = 'none';
                 walkingCharacterProgress.style.left = `${percentage}%`;
+                walkingCharacterProgress.style.transform = 'translateX(-50%)';
                 
                 // Re-enable transitions after a frame
                 requestAnimationFrame(() => {

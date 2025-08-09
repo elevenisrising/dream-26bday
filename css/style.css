@@ -112,16 +112,18 @@ body {
   66% { transform: translateY(-10px) translateX(-10px) scale(0.8); }
 }
 
-/* Simple Realistic Rope Design */
+/* Simple Realistic Rope Design - Attached to navbar bottom */
 .pull-rope-container {
-  position: fixed;
-  top: 70px;
+  position: absolute;
+  top: 0px; /* Start from top of hero section (right below navbar) */
   right: 80px;
   z-index: 10001;
   cursor: grab;
   user-select: none;
   padding: 15px;
-  transition: transform 0.1s ease;
+  transition: transform 0.1s ease, opacity 0.3s ease;
+  display: block;
+  opacity: 1;
 }
 
 .pull-rope-container:hover {
@@ -229,19 +231,18 @@ body {
 .pull-rope-container::after {
   content: attr(data-tooltip);
   position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: -50px;
+  right: -100px;
   background: rgba(0, 0, 0, 0.9);
   color: white;
-  padding: 8px 12px;
+  padding: 10px 15px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 14px;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  z-index: 10002;
+  z-index: 10003;
 }
 
 .pull-rope-container:hover::after {
@@ -278,24 +279,24 @@ body {
   border-radius: 0 !important;
 }
 
-/* Blob Alert Message */
+/* Blob Alert Message - Cursive green with white outline */
 .blob-alert {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(135deg, #00ff41 0%, #ffed4e 100%);
-  color: #0a0a0a;
-  font-size: 2.5rem;
-  font-weight: 800;
-  padding: 25px 50px;
-  border-radius: 30px;
-  box-shadow: 0 15px 40px rgba(0, 255, 65, 0.5);
+  font-family: 'Great Vibes', cursive;
+  font-size: 4.5rem;
+  font-weight: 900;
+  color: #00ff41; /* Dream's signature green, no outline */
+  text-shadow: 4px 4px 16px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 255, 65, 0.6); /* Strong shadow + green glow */
   z-index: 10002;
   animation: blobAlertAnimation 3s ease-in-out;
   pointer-events: none;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  border: 3px solid rgba(255,255,255,0.8);
+  font-style: italic; /* Cursive style */
+  letter-spacing: 3px; /* Better spacing for decorative text */
+  text-align: center;
+  white-space: nowrap;
 }
 
 @keyframes blobAlertAnimation {
@@ -321,7 +322,42 @@ body {
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.8) rotate(2deg);
   }
-  user-select: none;
+}
+
+/* Button tooltip */
+.btn[data-tooltip] {
+  position: relative;
+}
+
+.btn[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 10002;
+}
+
+.btn[data-tooltip]:hover::after {
+  opacity: 1;
+}
+
+/* Button hint text */
+.btn-hint {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-weight: 400;
+  margin-top: 2px;
 }
 
 @keyframes blobFall {
@@ -329,21 +365,25 @@ body {
     transform: translateY(-60px) rotate(0deg) scale(0.3);
     opacity: 0;
   }
-  10% {
+  5% {
     transform: translateY(-40px) rotate(45deg) scale(0.6);
     opacity: 0.8;
   }
-  20% {
+  15% {
     transform: translateY(10vh) rotate(90deg) scale(0.9);
     opacity: 1;
   }
-  50% {
-    transform: translateY(50vh) rotate(180deg) scale(1);
+  40% {
+    transform: translateY(40vh) rotate(180deg) scale(1);
     opacity: 0.9;
   }
-  80% {
-    transform: translateY(90vh) rotate(270deg) scale(1.1);
-    opacity: 0.5;
+  70% {
+    transform: translateY(70vh) rotate(270deg) scale(1.1);
+    opacity: 0.8;
+  }
+  90% {
+    transform: translateY(95vh) rotate(320deg) scale(1.0);
+    opacity: 0.6;
   }
   100% {
     transform: translateY(120vh) rotate(360deg) scale(0.8);
@@ -379,8 +419,10 @@ body {
   gap: 1rem;
 }
 
-.brand-icon svg {
+.brand-icon svg,
+.brand-icon img {
   transition: var(--transition);
+  margin-top: 3px; /* Slightly move down */
 }
 
 .brand-icon:hover svg {
@@ -459,10 +501,10 @@ body {
   height: 100%;
   background: linear-gradient(45deg, 
     var(--dream-green) 0%, 
-    var(--dream-yellow) 25%, 
+    var(--dream-blue) 25%, 
     var(--dream-purple) 50%, 
-    var(--dream-blue) 75%, 
-    var(--dream-accent) 100%);
+    var(--dream-accent) 75%, 
+    var(--dream-green) 100%);
   background-size: 400% 400%;
   animation: gradientShift 8s ease infinite;
 }
@@ -523,6 +565,7 @@ body {
   border: 4px solid var(--dream-green);
   box-shadow: var(--shadow-heavy);
   animation: avatarBounce 3s ease-in-out infinite;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 @keyframes avatarBounce {
@@ -807,6 +850,43 @@ section {
   font-size: 1.3rem;
 }
 
+/* Fact icon with smile images */
+.fact-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.fact-icon img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+/* Individual positioning adjustments for smile images */
+.fact:nth-child(1) .fact-icon {
+  transform: translateY(-3px); /* First smile up a bit */
+}
+
+.fact:nth-child(2) .fact-icon {
+  transform: translateY(3px); /* Second smile down a bit */
+}
+
+/* Adjust individual smile positions */
+.fact:nth-child(1) .fact-icon img {
+  transform: translateY(-2px); /* First smile up */
+}
+
+.fact:nth-child(2) .fact-icon img {
+  transform: translateY(2px); /* Second smile down */
+}
+
 @keyframes slideInLeft {
   from { opacity: 0; transform: translateX(-50px); }
   to { opacity: 1; transform: translateX(0); }
@@ -982,7 +1062,7 @@ section {
 .phase-content {
   margin: 0.5rem 0;
   position: relative;
-  min-height: 200px;
+  min-height: 450px; /* Increased from 300px to 450px (1.5x again) */
 }
 
 .phase-item {
@@ -992,12 +1072,13 @@ section {
   right: 0;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
-  padding: 2rem;
+  padding: 3.5rem; /* Increased from 3rem to 3.5rem for taller text box */
   border-radius: var(--border-radius);
   border: 1px solid rgba(255, 255, 255, 0.2);
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.5s ease;
+  min-height: 280px; /* Increased from 250px to 280px */
 }
 
 .phase-item.active {
@@ -1055,7 +1136,7 @@ section {
 
 /* Interactive Progress Bar */
 .journey-progress {
-  margin-top: 8rem;
+  margin-top: -8rem; /* Further negative margin to pull even closer */
   padding: 2rem;
   width: 100%;
   max-width: 1000px;
@@ -1141,8 +1222,8 @@ section {
   position: absolute;
   top: -160px;
   left: 0%;
-  transform: translateX(0%);
-  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%);
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 10;
   cursor: grab;
 }
@@ -1161,7 +1242,6 @@ section {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  animation: walkBounce 0.8s ease-in-out infinite;
 }
 
 /* Phase-specific GIF animations */
@@ -1401,20 +1481,21 @@ section {
 .wish-spotlight {
   text-align: center;
   position: relative;
-  min-height: 450px; /* Fixed height to prevent button jumping */
+  min-height: 600px; /* Increased from 450px to 600px for taller text box */
 }
 
 .featured-wish {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px);
-  padding: 3rem 2rem 2rem 2rem; /* Reduced bottom padding */
+  padding: 2rem 2rem 2rem 2rem;
   border-radius: var(--border-radius);
   border: 2px solid var(--dream-green);
   margin-bottom: 3rem; /* More space for fixed buttons */
   position: relative;
   transition: all 0.5s ease;
   box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
-  min-height: 200px; /* Minimum height for wish container */
+  height: 350px; /* Fixed height for consistent size */
+  overflow-y: auto; /* Enable scrolling when content overflows */
 }
 
 .featured-wish:hover {
@@ -1428,12 +1509,10 @@ section {
   line-height: 1.6;
   margin-bottom: 1rem;
   font-weight: 500;
-  max-height: 120px; /* Limit text height to prevent overlap */
-  overflow-y: auto; /* Add scroll if text is too long */
 }
 
 .featured-wish .wish-content {
-  padding-bottom: 4rem; /* Space for fixed buttons */
+  padding-bottom: 0.2rem; /* Further reduced to bring text much closer to bottom */
 }
 
 .featured-wish .wish-author {
@@ -1441,7 +1520,7 @@ section {
   font-size: 1.1rem;
   font-weight: 600;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem; /* Reduced from 0.5rem to 0.2rem */
 }
 
 .wish-example {
@@ -1459,10 +1538,10 @@ section {
   gap: 1rem;
   justify-content: center;
   position: absolute;
-  bottom: 0;
+  bottom: 7rem; /* Moved even further up from 2rem to 3rem */
   left: 0;
   right: 0;
-  padding: 1rem 0; /* Add some padding from bottom */
+  padding: 0.5rem 0; /* Reduced padding */
 }
 
 .wish-controls .btn {
@@ -1665,7 +1744,8 @@ section {
 .artwork-display {
   position: relative;
   width: 100%;
-  flex: 1;\n  min-height: 400px;
+  flex: 1;
+  min-height: 400px;
   border-radius: 15px;
   overflow: hidden;
   margin-bottom: 1.5rem;
@@ -1715,7 +1795,7 @@ section {
   max-width: 800px;
   margin: 0 auto;
   box-sizing: border-box;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 11; /* Changed from 16/9 to 16/11 for more height */
   display: flex;
   flex-direction: column;
 }
@@ -1787,6 +1867,13 @@ section {
   opacity: 0.8;
   margin-bottom: 1rem;
   font-size: 1rem;
+}
+
+#artworkDescription {
+  max-height: 4.5em;
+  line-height: 1.5em;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .artist-info {
@@ -1925,9 +2012,36 @@ section {
 .footer-bottom {
   text-align: center;
   padding-top: 2rem;
+  padding-bottom: 1rem; /* Added bottom padding to bring closer to edge */
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--dream-light);
   opacity: 0.6;
+}
+
+/* Birthday Dream Text Animation */
+@keyframes birthdayTextGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes birthdayTextFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0px) scale(1); }
+  50% { transform: translateX(-50%) translateY(-10px) scale(1.05); }
+}
+
+/* Balloon Animation Enhancements */
+.balloon-blob-animation {
+  filter: drop-shadow(0 4px 12px rgba(255, 107, 107, 0.4));
+  animation: balloonFloat 4s ease-in-out;
+}
+
+@keyframes balloonFloat {
+  0% { transform: translateX(-50%) rotate(0deg); }
+  25% { transform: translateX(-50%) rotate(-3deg); }
+  50% { transform: translateX(-50%) rotate(2deg); }
+  75% { transform: translateX(-50%) rotate(-1deg); }
+  100% { transform: translateX(-50%) rotate(5deg) scale(1.1); }
 }
 
 /* Confetti */

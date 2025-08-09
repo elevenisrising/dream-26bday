@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>🎉 Happy Birthday Dream! 🎂</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Fredoka+One:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Fredoka+One:wght@400&family=Dancing+Script:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link rel="stylesheet" href="css/style.css" />\n  <script>\n    // Add timestamp to CSS and JS files for stronger cache busting\n    document.addEventListener('DOMContentLoaded', function() {\n      const timestamp = Date.now();\n      // Update CSS link\n      const cssLink = document.querySelector('link[href=\"css/style.css\"]');\n      if (cssLink) {\n        cssLink.href = 'css/style.css?v=' + timestamp;\n      }\n      // Update JS scripts\n      const scripts = document.querySelectorAll('script[src]');\n      scripts.forEach(script => {\n        const src = script.getAttribute('src');\n        if (src && src.includes('.js') && !src.includes('?v=')) {\n          script.src = src + '?v=' + timestamp;\n        }\n      });\n    });\n  </script>
   <link rel="icon" href="assets/dreampfp.png" type="image/png" />
@@ -32,13 +32,6 @@
   
   <!-- Falling blobs container -->
   <div id="blobs-container"></div>
-
-  <!-- Birthday Pull String -->
-  <div class="pull-rope-container" data-tooltip="Pull down for a surprise!">
-    <div class="rope-string">
-      <div class="rope-end"></div>
-    </div>
-  </div>
 
   <!-- Navigation -->
   <nav class="navbar">
@@ -105,12 +98,21 @@
         <button class="btn btn-primary" id="celebrateBtn">
           <i class="fas fa-party-horn"></i>
           Start Celebration!
+          <small class="btn-hint">(Click it!)</small>
         </button>
       </div>
       <div class="refresh-notice">
         <p><small>🔄 If you've seen the demo before, please force refresh the page: <strong>Ctrl + F5</strong> (Windows)</small></p>
       </div>
     </div>
+    
+    <!-- Birthday Pull String - Part of hero section -->
+    <div class="pull-rope-container" data-tooltip="Pull down for a surprise!">
+      <div class="rope-string">
+        <div class="rope-end"></div>
+      </div>
+    </div>
+    
     <div class="scroll-indicator">
       <i class="fas fa-chevron-down"></i>
     </div>
@@ -132,15 +134,21 @@
           </div>
           <div class="dream-facts">
             <div class="fact">
-              <i class="fas fa-calendar"></i>
+              <div class="fact-icon">
+                <img src="assets/smiles/IMG_6917.png" alt="Dream Smile" />
+              </div>
               <span>Born: August 12, 1999 (Age 26)</span>
             </div>
             <div class="fact">
-              <i class="fas fa-map-marker-alt"></i>
+              <div class="fact-icon">
+                <img src="assets/smiles/IMG_6918.png" alt="Dream Smile" />
+              </div>
               <span>From: Orlando, Florida</span>
             </div>
             <div class="fact">
-              <i class="fas fa-gamepad"></i>
+              <div class="fact-icon">
+                <img src="assets/smiles/IMG_6919.png" alt="Dream Smile" />
+              </div>
               <span>Known for: Minecraft Manhunt</span>
             </div>
           </div>
@@ -174,27 +182,27 @@
         <!-- Phase Content Display -->
         <div class="phase-content">
           <div class="phase-item active" data-phase="1">
-            <h3>Phase 1: Foundation Era <span class="phase-year-inline">None</span></h3>
+            <h3>Phase 1: Foundation Era</h3>
             <p>None</p>
           </div>
           <div class="phase-item" data-phase="2">
-            <h3>Phase 2: Early Content Era <span class="phase-year-inline">None</span></h3>
+            <h3>Phase 2: Early Content Era</h3>
             <p>None</p>
           </div>
           <div class="phase-item" data-phase="3">
-            <h3>Phase 3: Manhunt Era <span class="phase-year-inline">None</span></h3>
+            <h3>Phase 3: Manhunt Era</h3>
             <p>None</p>
           </div>
           <div class="phase-item" data-phase="4">
-            <h3>Phase 4: DreamSMP Era <span class="phase-year-inline">None</span></h3>
+            <h3>Phase 4: DreamSMP Era</h3>
             <p>None</p>
           </div>
           <div class="phase-item" data-phase="5">
-            <h3>Phase 5: MCC Era <span class="phase-year-inline">None</span></h3>
+            <h3>Phase 5: MCC Era</h3>
             <p>None</p>
           </div>
           <div class="phase-item" data-phase="6">
-            <h3>Phase 6: Face Reveal Era <span class="phase-year-inline">None</span></h3>
+            <h3>Phase 6: Face Reveal Era</h3>
             <p>None</p>
           </div>
           <div class="phase-item" data-phase="7">
