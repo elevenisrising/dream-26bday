@@ -2,12 +2,12 @@
 // DO NOT EDIT MANUALLY - this file is overwritten by clean_artworks.py
 
 const ARTWORKS_DATA = [
-    { filename: "sample_art_1.jpg", artist: "Dream Fan Artist", description: "Happy Birthday Dream! Amazing speedrun celebration art", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_1.jpg" },
-    { filename: "sample_art_2.jpg", artist: "MinecraftMaster", description: "Epic manhunt chase scene with Dream\'s signature moves", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_2.jpg" },
-    { filename: "sample_art_3.jpg", artist: "PixelCreator", description: "Beautiful portrait of Dream with his iconic smile", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_3.jpg" },
-    { filename: "sample_art_4.jpg", artist: "ArtisticDreamer", description: "Dream SMP birthday party with all the characters", link: "https://twitter.com/elevenisrising", path: "assets/artworks/sample_art_4.jpg" },
+    { filename: "Yayay.PNG", artist: "Yayay0827", description: "Dream has been a huge inspiration in my life for the past 4C5 years. From high school to college, he has been my favorite content creator, and always will be. I hope he has a wonderful birthday, and I look forward to all the upcoming content he has prepared for us!", link: "https://x.com/dPdPdl0827", path: "assets/artworks/Yayay.PNG" },
+    { filename: "ray.png", artist: "Fuzzypeachx", description: "This art is Dream having a fun little birthday party with a cake I decorated based on the Dream Team!", link: "https://x.com/Fuzzypeachx?t=VU7oGYbyha9A40kKtoVHpg&s=09", path: "assets/artworks/ray.png" },
+    { filename: "ash.png", artist: "AshDoesDraw_", description: "For the message: there wasnt really anything specific that inspired the piece, however, I wanted to include dream, dreamteam, minecraft and the blob all into one piece that celebrates dream day. Its a few of my favourite things united through an artwork that Im really proud of. Happy birthday, Dream", link: "https://x.com/ashdoesdraw_?s=21", path: "assets/artworks/ash.png" },
+    { filename: "HokusNotTaken2.png", artist: "HokusNotTaken", description: "I had recently discovered my talent in drawing food and wanted to show that off once more, while also keeping this birthday themed. I guess I could say making this was a piece of cake ;]", link: "https://x.com/HokusNotTaken?t=CzgVwnsgLr_5nL704LEuXw&s=09", path: "assets/artworks/HokusNotTaken2.png" },
     { filename: "HokusNotTaken.png", artist: "HokusNotTaken", description: "For this piece I wanted to play around with colors, making the backround and the character very distinct from each other. Since the backround is green, I chose to make Dream and the balloons the opposite color - red :]", link: "https://x.com/HokusNotTaken?t=CzgVwnsgLr_5nL704LEuXw&s=09", path: "assets/artworks/HokusNotTaken.png" },
-    { filename: "YNKATcj.png", artist: "YNKATcj", description: "Amazing artwork by YNKATcj", link: "https://x.com/lynkatcj?s=21&t=UfjJ-MyQwaNifZRW5rvs3w", path: "assets/artworks/YNKATcj.png" }
+    { filename: "YNKATcj.png", artist: "YNKATcj", description: "Multiple projects and identities, but only one man", link: "https://x.com/lynkatcj?s=21&t=UfjJ-MyQwaNifZRW5rvs3w", path: "assets/artworks/YNKATcj.png" }
 ];
 
 // Export for use in main script

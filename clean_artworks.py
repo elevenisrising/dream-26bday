@@ -7,6 +7,7 @@ import csv
 import os
 import re
 
+
 def clean_artworks_csv():
     """Clean the artworks CSV file and create JS hardcoded data file"""
     
@@ -21,13 +22,34 @@ def clean_artworks_csv():
     cleaned_artworks = []
     
     try:
-        with open(input_file, 'r', encoding='utf-8') as file:
-            reader = csv.reader(file)
-            
-            # Skip header row
-            next(reader, None)
-            
-            for row_num, row in enumerate(reader, start=2):
+        # Try multiple encodings in order of likelihood  
+        encodings_to_try = ['utf-8', 'gbk', 'cp1252', 'latin-1', 'utf-16']
+        
+        file_content = None
+        used_encoding = None
+        
+        for encoding in encodings_to_try:
+            try:
+                with open(input_file, 'r', encoding=encoding) as file:
+                    file_content = file.read()
+                    used_encoding = encoding
+                    print(f"✓ Successfully read file using encoding: {encoding}")
+                    break
+            except (UnicodeDecodeError, LookupError):
+                print(f"❌ Failed to read with encoding: {encoding}")
+                continue
+        
+        if file_content is None:
+            print("❌ Could not read file with any encoding")
+            return
+        
+        # Parse CSV from string content
+        csv_reader = csv.reader(file_content.splitlines())
+        
+        # Skip header row
+        next(csv_reader, None)
+        
+        for row_num, row in enumerate(csv_reader, start=2):
                 if len(row) >= 4:
                     filename = row[0].strip()
                     artist_name = row[1].strip()
@@ -47,6 +69,9 @@ def clean_artworks_csv():
                         art_description = f"Amazing artwork by {artist_name}"
                     else:
                         art_description = art_description.replace('"', '').strip()
+                        # Clean up broken unicode characters
+                        art_description = re.sub(r'�+', '', art_description)
+                        art_description = art_description.replace('�C', '-')
                     
                     # Clean artist link
                     artist_link = artist_link.strip()
